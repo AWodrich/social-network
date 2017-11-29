@@ -13,13 +13,15 @@ export default class Register extends React.Component {
           password: ''
         };
         this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
     }
     onSubmit(e) {
         e.preventDefault();
        // getting form data out of state
-        const { fname, lname, email } = this.state;
+        const { fname, lname, email, password } = this.state;
 
-        axios.post('/', { fname, lname, email })
+        axios.post('/', { fname, lname, email, password })
             .then(res => {
                 if(res.data.success) {
                     location.replace('/profile')
@@ -33,7 +35,7 @@ export default class Register extends React.Component {
     onChange(e) {
         // Because inputs are named to match their corresponding values in state, it's
         // easy to update the state
-        const state = this.state
+        const state = {};
         state[e.target.name] = e.target.value;
         this.setState(state);
 
@@ -43,13 +45,13 @@ export default class Register extends React.Component {
         return (
             <div>
                 {this.state.error && <div>You made a mistake</div>}
-                <form className="register" method="post">
+                <div className="register">
                     <input onChange={this.onChange} type="text" nameClass="inputRegister" name="fname" placeholder="Enter First Name" />
                     <input onChange={this.onChange} type="text" nameClass="inputRegister" name="lname" placeholder="Enter Last Name" />
                     <input onChange={this.onChange} type="text" nameClass="inputRegister" name="email" placeholder="Enter E-Mail" />
                     <input onChange={this.onChange} type="password" nameClass="inputRegister" name="password" placeholder="Enter Password" />
-                    <button type="submit" nameClass="registerSubmit">Register</button>
-                </form>
+                    <button onClick={this.onSubmit} type="button" nameClass="registerSubmit">Register</button>
+                </div>
             </div>
         )
     }

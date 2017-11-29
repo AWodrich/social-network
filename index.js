@@ -51,10 +51,13 @@ app.use(compression());
 
 // 1. Main route
 app.get('*', function(req, res){
-    // if(!req.session.user && req.session.url != '/welcome'){
-    //     res.redirect('/welcome')
-    //     return;
-    // }
+    if(!req.session.user && req.session.url != '/'){
+        res.redirect('/')
+        return;
+    }
+    if(req.session.user && req.session.url == '/') {
+        res.redirect('/profile')
+    }
     res.sendFile(__dirname + '/index.html');
 });
 
@@ -81,7 +84,7 @@ app.post('/', (req, res) => {
                           email,
                           id
                       }
-                      res.json(id)
+                      res.json({success: true})
                   }).catch(err => {
                       console.log(err);
                   });
