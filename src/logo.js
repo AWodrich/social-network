@@ -7,8 +7,12 @@ export default class Logo extends React.Component {
         this.state = {};
     }
     render() {
+        console.log('props in logo', this.props);
         return(
-            <h1>here comes the logo</h1>
+            <div className="containerLogo">
+                <img className="logoImg" src="../public/logo.jpg" />
+                <h1>Welcome to your personal page</h1>
+            </div>
         )
     }
 }

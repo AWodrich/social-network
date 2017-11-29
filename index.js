@@ -49,10 +49,10 @@ app.use(compression());
 
 // ============== routes =================
 
-// 1. Main route
-app.get('*', function(req, res){
+// 1. Main Page
+app.get('/', function(req, res){
     if(!req.session.user && req.session.url != '/'){
-        res.redirect('/')
+        res.redirect('/welcome/')
         return;
     }
     if(req.session.user && req.session.url == '/') {
@@ -61,6 +61,12 @@ app.get('*', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/welcome/', (req, res) => {
+    if(req.session.user) {
+        res.redirect('/')
+    }
+    res.sendFile(__dirname + '/index.html');
+})
 
 //   2. Registration page
 
@@ -68,8 +74,8 @@ app.get('*', function(req, res){
 app.post('/', (req, res) => {
         console.log('req.body', req.body);
 
-          let first = req.body.fname;
-          let last = req.body.lname;
+          let first = req.body.first;
+          let last = req.body.last;
           let password = req.body.password;
           let email = req.body.email;
           if(!first || !last || !password || !email) {
@@ -94,6 +100,51 @@ app.post('/', (req, res) => {
           }
     });
 
+    // 3. Login Page
+
+app.post('/authorize', (req, res) => {
+    const { email, password } = req.body;
+    if(!email || !password) {
+        res.redirect('/login')
+    } else {
+        database.getLoginCreds(email)
+        .then(loginData => {
+            pw.checkPassword(password, loginData.hashed_password).then(doesMatch => {
+                      if(!doesMatch) {
+                          res.json({success:false})
+                      } else {
+                          res.json({loginData, success:true})
+                          req.session.user = true;
+                      }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+})
+
+
+    // 4. Profile Page
+
+app.get('/profile', (req, res) => {
+    // console.log('req.body in profile', req.body);
+})
+
+// 1. Main route
+app.get('*', function(req, res){
+    if(!req.session.user && req.session.url != '/'){
+        res.redirect('/')
+        return;
+    }
+    if(req.session.user && req.session.url == '/') {
+        res.redirect('/profile')
+    }
+    res.sendFile(__dirname + '/index.html');
+});
 //=================== setting up server ========================================//
 app.listen(8080, function() {
     console.log("I'm listening.")

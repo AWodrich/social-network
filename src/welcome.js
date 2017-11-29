@@ -1,6 +1,9 @@
 import React from 'react';
 import Register from './register';
+import { Link } from 'react-router';
+import Login from './login';
 
+// in functional components we do not have 'this', as no state and no constructor
 
 
 export default class Welcome extends React.Component {
@@ -12,7 +15,7 @@ export default class Welcome extends React.Component {
         return (
             <div>
                 <h1>Welcome on the Social Network, that does not have a proper name yet</h1>
-                <Register />
+                {this.props.children}
             </div>
         )
     }
