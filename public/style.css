@@ -58,21 +58,28 @@ main {
 .logoImg {
     width: 200px;
     height: 200px;
-    /*position: relative;*/
-    /*right: 470px;*/
+    position: absolute;
+    left: 1%;
     border-radius: 100px;
-    /*top: -200px;*/
+    top: 0px;
 }
 
 
 
 /* After Login / Personal Page */
 .profileImg {
-    position: relative;
-    top: -300px;
-    left: 980px;
+    position: absolute;
+    top: 20px;
+    left: 1280px;
     width: 60px;
     height: auto;
+}
+
+@media only screen and (max-width: 800px) {
+    .profileImg {
+        /*position: relative;*/
+        left: 200px;
+    }
 }
 
 .wrapLogoH1 {

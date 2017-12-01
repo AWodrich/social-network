@@ -12,7 +12,8 @@ export default class Register extends React.Component {
           first: '',
           last: '',
           email: '',
-          password: ''
+          password: '',
+          imgUrl: ''
         };
         // if we use functions in a class, we have to BIND something.
         // React always does it the ES6 way.
@@ -25,13 +26,13 @@ export default class Register extends React.Component {
         e.preventDefault();
         console.log(e.target);
        // getting form data out of state
-        const { first, last, email, password } = this.state;
+        const { first, last, email, password, imgUrl } = this.state;
 
         // instead of this.state.first, this.state.lname, this.state.password
         // const { first, lname, email, password } = this.state;
         // => so i only need to write first, lname, email, password
 
-        axios.post('/', { first, last, email, password })
+        axios.post('/', { first, last, email, password, imgUrl })
             .then(res => {
                 if(res.data.success) {
                     location.replace('/')
@@ -41,16 +42,6 @@ export default class Register extends React.Component {
          });
     }
     onChange(e) {
-        // Because inputs are named to match their corresponding values in state, it's
-        // easy to update the state
-        //  we to set the state using setState, we pass an object to it, that we want to set
-
-        // this.setState({
-            // [e.target.name]:e.target.value
-        // },() => {
-            // console.log('new state', this.state)
-        // })
-        //
         // [e.target.name] => NOT an array!!! THIS is ES6 syntax for
         // dynamically generating a key name. on the fly.
         // name comes from that element name="firstName"

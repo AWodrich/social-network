@@ -7,45 +7,64 @@ import { Link } from 'react-router';
 
 // props.children ist coming from react-Router
 
+
+// Container App
+
 export class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            // image:'',
-            // first:'',
-            // last:''
-        };
+        this.state = {};
+
+        this.showUploader = this.showUploader.bind(this)
     }
     componentDidMount() {
         axios.get('/user').then(({data}) => {
-            this.setState(data);
+            this.setState({
+                first: data.first,
+                last: data.last,
+                imgUrl: data.imageUrl
+            });
+        })
+    }
+    showUploader() {
+        this.setState({
+            uploaderIsVisible: true
         })
     }
     render() {
-        const setImage = (imgUrl) => {
-            this.setState({
-                profilePic: imgUrl
-            })
+        var { first, last, imgUrl } = this.state;
+
+        if(imgUrl == null) {
+            imgUrl = '/defaultProfileImg.jpg'
         }
-        if(!this.state.id) {
-            return null;
-            // render a spinner if you want
+
+        const children = React.cloneElement(this.props.children, {
+            first,
+            last,
+            showUploader: this.showUploader
+        });
+
+        if(!this.state) {
+            return(
+                <div>Loading....</div>
+            )
         }
+
         return (
             <div>
-                <Home />
-                <ProfilePic
-                    image={this.state.profilePic}
-                    first={this.state.first}
-                    last={this.state.last}
-                    showUploader={() => this.setState({uploaderIsVisible: true})}
-                />
-                {this.state.uploaderIsVisible && <UploadImage setImage={setImage} />}
-                {this.props.children}
+                {children}
+                {this.state.uploaderIsVisible && <UploadImage />}
+                <Logo />
+                <ProfilePic showUploader={this.showUploader} imgUrl={imgUrl} />
             </div>
         )
     }
 }
+
+
+// =================== Child Components =======================================//
+
+// Logo Component
 
 export class Logo extends React.Component {
     constructor(props) {
@@ -54,11 +73,17 @@ export class Logo extends React.Component {
     }
     render() {
         return(
-            <img className="logoImg" src="../public/logo.jpg" />
+            <div>
+                <img className="logoImg" src="/logo.jpg" />
+            </div>
         )
     }
 }
 
+
+
+
+// Functionality click on Profile Pic Component
 
 export class ProfilePic extends React.Component {
     constructor(props) {
@@ -66,31 +91,38 @@ export class ProfilePic extends React.Component {
         this.state={}
     }
     render() {
+        if(!this.state) {
+            return null
+        }
         return(
-            <img onClick={this.props.showUploader} className='profileImg' src="../public/defaultProfileImg.jpg" />
-
+            <div>
+                <img onClick={this.props.showUploader} className='profileImg' src={this.props.imgUrl} />
+            </div>
         )
     }
 }
 
+
+
+// Upload Image Component
+
 export class UploadImage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
+
         this.uploadImage = this.uploadImage.bind(this);
         this.onChange = this.onChange.bind(this);
     }
     uploadImage(e) {
         e.preventDefault();
 
-        console.log('what is the state??', this.state);
         var formData = new FormData();
         formData.append('file', this.state.file);
 
         axios.post('/upload', formData)
         .then(res => {
-            console.log(res);
+            location.replace('/')
         })
     }
     onChange(e) {
@@ -100,10 +132,10 @@ export class UploadImage extends React.Component {
 
     }
     render() {
-
         return (
             <div>
             <h3>Would you like to change your profile image?</h3>
+            <h1>Upload image</h1>
                 <input onChange={this.onChange} className="file" type="file" name="file" />
                 <button type="button" onClick={this.uploadImage}>Upload Image</button>
             </div>

@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router';
 import Welcome from './welcome';
 import Login from './login';
 import Register from './register';
 import { Home } from './home';
-import { App, Logo, UploadImage } from './app';
+import { App, Logo, UploadImage, ProfilePic } from './app';
 
 
 
@@ -20,18 +20,22 @@ const notLoggedInRouter = (
     </Router>
 );
 
-const loggedInRouter = <App />
+const loggedInRouter = (
+    <Router history={browserHistory}>
+        <Route path="/" component={App}>
+            <IndexRoute component={Home} />
+            <Route path="/upload" component={UploadImage} />
+            <Route path="/logo" component={Logo} />
+            <Route path="/profile" component={ProfilePic} />
+        </Route>
+    </Router>
+)
 
 
-// const loggedInRouter = <App />
-
-// the server dictates who is deciding where we go.
-// in my app.get routes we have
 if(location.pathname == '/welcome/') {
     router = notLoggedInRouter;
 } else {
     router = loggedInRouter;
 }
-
 
 ReactDOM.render(router, document.querySelector('main'));

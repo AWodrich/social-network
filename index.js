@@ -68,7 +68,7 @@ app.use((req, res, next) => {
 
 
 // ====== serve static directory ==================================
-app.use('/public', express.static("public"));
+app.use(express.static("public"));
 app.use(express.static('uploads'));
 
 // every time we need to regenerate the entire applicaton.
@@ -121,12 +121,13 @@ app.post('/', (req, res) => {
           let last = req.body.last;
           let password = req.body.password;
           let email = req.body.email;
+          let imgUrl;
           if(!first || !last || !password || !email) {
               let error = "Please register to continue"
               res.json('Error')
           } else {
               pw.hashPassword(password).then(hashedPw => {
-                  database.storeRegistrationData(first, last, email, hashedPw).then(id => {
+                  database.storeRegistrationData(first, last, email, hashedPw, imgUrl).then(id => {
                       req.session.user = {
                           first,
                           last,
@@ -152,6 +153,9 @@ app.post('/authorize', (req, res) => {
     } else {
         database.getLoginCreds(email)
         .then(loginData => {
+            // console.log('loginData', loginData.imgid == true);
+            // console.log('loginData', loginData);
+            // console.log('logindata hashed_password', loginData.hashed_password);
             pw.checkPassword(password, loginData.hashed_password).then(doesMatch => {
                       if(!doesMatch) {
                           res.json({success:false})
@@ -162,7 +166,9 @@ app.post('/authorize', (req, res) => {
                           res.json({
                               email: loginData.email,
                               id: loginData.id,
-                              success: true
+                              success: true,
+                              imgId: loginData.imgid,
+                              imageUrl: loginData.image
                           })
                       }
             })
@@ -188,12 +194,18 @@ app.get('/logout', function(req, res) {
 
 // 5. Part3
 app.get('/user', (req, res) => {
-
-    res.json(req.session.user)
-    // database.getUser(req.ssession.user.id)
-    // .then(user => {
-    //     res.json(user)
-    // })
+    database.getUserInfo(req.session.user.id)
+    .then(results => {
+        console.log('results, after get user info', results);
+        const { first, last, bios, imgid, image } = results
+        res.json({
+            first,
+            last,
+            imgid,
+            imageUrl: image,
+            id: req.session.user.id
+        })
+    })
 })
 
 
@@ -204,8 +216,11 @@ app.post('/upload', uploader.single('file'), (req, res) => {
         .then(()  => {
             database.uploadImages(req.file.filename, req.session.user.id)
             .then(result=> {
-                console.log('result after uploading images?', result);
-                res.json(result);
+                // res.redirect('/user')
+                res.json({
+                    success: true,
+                    imgUrl: req.file.filename
+                });
             })
             .catch(err => {
                 console.log(err);
@@ -220,7 +235,9 @@ app.post('/upload', uploader.single('file'), (req, res) => {
 
 
 
-// 1. Fallback route
+// 1. Fallback route, the fail safe
+// This route has to go on the bottom of this file.
+
 app.get('*', function(req, res){
     if(!req.session.user && req.session.url != '/'){
         res.redirect('/')

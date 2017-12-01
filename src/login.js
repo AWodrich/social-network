@@ -3,10 +3,6 @@ import axios from 'axios';
 import { Link } from 'react-router';
 
 
-
-
-
-
 export default class Login extends React.Component {
     constructor(props) {
         super(props)
@@ -18,7 +14,6 @@ export default class Login extends React.Component {
         this.onSubmit = this.onSubmit.bind(this)
     }
     onChange(e) {
-
         const state = {};
         state[e.target.name] = e.target.value;
         this.setState(state);
@@ -31,7 +26,7 @@ export default class Login extends React.Component {
 
         axios.post('/authorize', { email, password })
             .then(res => {
-                console.log('+++++++++what is res after successful login?', res.data);
+                // console.log('+++++++++what is res after successful login?', res.data);
                 if(res.data.success) {
                     location.replace('/')
                 } else {

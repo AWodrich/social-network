@@ -11,12 +11,12 @@ if(process.env.DATABASE_URL){
 var db = spicedPg(dbUrl);
 
 // 1. Store user data after registration
-exports.storeRegistrationData = (first, last, email, hashedPassword) => {
-    console.log('store registration data', first, last, email, hashedPassword);
-    var q = `INSERT INTO users (first, last, email, hashed_password)
-            VALUES ($1, $2, $3, $4)
-            RETURNING id`;
-    var params = [first, last, email, hashedPassword];
+exports.storeRegistrationData = (first, last, email, hashedPassword, imgUrl) => {
+    console.log('store registration data', first, last, email, hashedPassword, imgUrl);
+    var q = `INSERT INTO users (first, last, email, hashed_password, image)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING id, image`;
+    var params = [first, last, email, hashedPassword, imgUrl];
     return db.query(q, params)
     .then(results => {
         console.log('results?', results);
@@ -31,13 +31,15 @@ exports.storeRegistrationData = (first, last, email, hashedPassword) => {
 
 exports.getLoginCreds = (email) => {
     console.log('in database', email);
-    var q = `SELECT email, hashed_password, id
+    var q = `SELECT users.email, users.hashed_password, users.id, images.id AS imgId, images.image
             FROM users
-            WHERE email = $1`
+            LEFT JOIN images
+            ON users.id = images.user_id
+            WHERE users.email = $1`
     var params = [email]
     return db.query(q, params)
     .then(data => {
-        console.log('loginData', data);
+        console.log('++++++++ after login in database loginData', data);
         return data.rows[0];
     })
     .catch(err => {
@@ -45,18 +47,32 @@ exports.getLoginCreds = (email) => {
     })
 }
 
-// 3. Uoploading Profile images// ==== uploading images and storing into database
-exports.uploadImages = (imageUrl, id) => {
-    // var q = `INSERT INTO images(image, user_id)
-    //         VALUES($1, $2)`
 
-    var q = `UPDATE images
+// 3. Getting User Info Data, and rendering profilePic
+
+exports.getUserInfo = (id) => {
+    var q = `SELECT first, last, bios, image
+            FROM users
+            WHERE id = $1`
+    var params = [id]
+    return db.query(q, params)
+    .then(userInfo => {
+        return userInfo.rows[0]
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+
+// 4. Uploading Profile images// ==== uploading images and storing into database
+exports.uploadImages = (imageUrl, id) => {
+    var q = `UPDATE users
             SET image=$1
-            WHERE user_id=$2`
+            WHERE id=$2`
     var params = [imageUrl, id]
     return db.query(q, params)
     .then(results => {
-        console.log('results after storing data into uploadImages?', results);
         return results;
     })
     .catch(err => {
