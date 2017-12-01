@@ -197,13 +197,13 @@ app.get('/user', (req, res) => {
     database.getUserInfo(req.session.user.id)
     .then(results => {
         console.log('results, after get user info', results);
-        const { first, last, bios, imgid, image } = results
+        const { first, last, bios, image } = results
         res.json({
             first,
             last,
-            imgid,
             imageUrl: image,
-            id: req.session.user.id
+            id: req.session.user.id,
+            bios
         })
     })
 })
@@ -231,6 +231,18 @@ app.post('/upload', uploader.single('file'), (req, res) => {
         })
 
     }
+})
+
+
+// 7. Updating Bio information
+
+app.post('/update-bio', (req, res) => {
+    database.updatedBio(req.body.updatedBio, req.session.user.id)
+    .then(results => {
+        res.json({
+            success:true
+        })
+    })
 })
 
 

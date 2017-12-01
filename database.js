@@ -79,3 +79,21 @@ exports.uploadImages = (imageUrl, id) => {
         console.log(err);
     })
 }
+
+
+// 5. Updating Bio
+
+exports.updatedBio = (text, id) => {
+    var q =`UPDATE users
+            SET bios=$1
+            WHERE id=$2`
+    var params = [text, id]
+    return db.query(q, params)
+    .then(results => {
+        return results
+    })
+    .catch(err => {
+        console.log(err);
+    })
+
+}
