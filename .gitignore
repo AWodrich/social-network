@@ -3,3 +3,5 @@ node_modules
 bundle.js
 package-lock.json
 secret.json
+secrets.json
+config.json

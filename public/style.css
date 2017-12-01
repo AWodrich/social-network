@@ -57,7 +57,30 @@ main {
 
 .logoImg {
     width: 200px;
-    height: auto;
+    height: 200px;
+    /*position: relative;*/
+    /*right: 470px;*/
+    border-radius: 100px;
+    /*top: -200px;*/
+}
+
+
+
+/* After Login / Personal Page */
+.profileImg {
     position: relative;
-    right: 470px;
+    top: -300px;
+    left: 980px;
+    width: 60px;
+    height: auto;
+}
+
+.wrapLogoH1 {
+    border: 1px solid pink;
+    width: 1000px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    position: relative;
+    top: -100px;
 }

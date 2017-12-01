@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import Logo from './logo';
 import Login from './login';
 import { Link } from 'react-router'
 
@@ -35,12 +34,10 @@ export default class Register extends React.Component {
         axios.post('/', { first, last, email, password })
             .then(res => {
                 if(res.data.success) {
-                    location.replace('/profile')
+                    location.replace('/')
                 } else {
                     this.setState({ error: true })
                 }
-                <Logo />
-                console.log('result', res);
          });
     }
     onChange(e) {

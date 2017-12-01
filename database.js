@@ -31,7 +31,7 @@ exports.storeRegistrationData = (first, last, email, hashedPassword) => {
 
 exports.getLoginCreds = (email) => {
     console.log('in database', email);
-    var q = `SELECT email, hashed_password
+    var q = `SELECT email, hashed_password, id
             FROM users
             WHERE email = $1`
     var params = [email]
@@ -39,6 +39,25 @@ exports.getLoginCreds = (email) => {
     .then(data => {
         console.log('loginData', data);
         return data.rows[0];
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+// 3. Uoploading Profile images// ==== uploading images and storing into database
+exports.uploadImages = (imageUrl, id) => {
+    // var q = `INSERT INTO images(image, user_id)
+    //         VALUES($1, $2)`
+
+    var q = `UPDATE images
+            SET image=$1
+            WHERE user_id=$2`
+    var params = [imageUrl, id]
+    return db.query(q, params)
+    .then(results => {
+        console.log('results after storing data into uploadImages?', results);
+        return results;
     })
     .catch(err => {
         console.log(err);

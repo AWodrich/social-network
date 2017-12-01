@@ -1,17 +1,48 @@
 const express = require('express');
 const app = express();
+
 const bodyParser = require('body-parser');
-const database = require('./database.js');
-const cookieSession = require("cookie-session");
-const pw = require('./password');
-const cookieParser = require('cookie-parser');
-const router = express.Router();
+// avoiding injection
 const csrf = require('csurf');
 const csrfProtection = csrf();
+const uidSafe = require('uid-safe');
+// for Password hashing, setting sessions
+const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
+// for uploading purposes
+const multer = require('multer');
+const path = require('path');
+// importing files
+const pw = require('./password');
+const database = require('./database.js');
+const s3 = require('./s3');
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// Storing images
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + '/uploads');
+    },
+    filename: function (req, file, callback) {
+      uidSafe(24).then(function(uid) {
+          callback(null, uid + path.extname(file.originalname));
+      });
+    }
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+
 
 
 // ========= compress text, that is sent to the browser ==============================
 const compression = require('compression');
+
+
 
 // ========== test if app in production, which would be heroku.
 // when code is bundle.js, then go to a different server, here it would be localhost:8081;
@@ -21,8 +52,12 @@ if (process.env.NODE_ENV != 'production') {
     }));
 }
 
+
+
 // ========= make webpage secure ==============================
 app.disable('x-powered-by');
+
+
 
 // ========= make sure your side cannot being put into a frame =====
 app.use((req, res, next) => {
@@ -30,9 +65,15 @@ app.use((req, res, next) => {
     next();
 });
 
+
+
 // ====== serve static directory ==================================
 app.use('/public', express.static("public"));
+app.use(express.static('uploads'));
+
 // every time we need to regenerate the entire applicaton.
+
+
 
 // ====== use cookie, cookie-session, bodyParser and compression ================
 // we need this because "cookie" is true in csrfProtection
@@ -46,6 +87,8 @@ app.use(cookieSession({
 }));
 app.use(bodyParser.json())
 app.use(compression());
+
+
 
 // ============== routes =================
 
@@ -113,8 +156,14 @@ app.post('/authorize', (req, res) => {
                       if(!doesMatch) {
                           res.json({success:false})
                       } else {
-                          res.json({loginData, success:true})
-                          req.session.user = true;
+                          req.session.user = {
+                              id: loginData.id
+                          }
+                          res.json({
+                              email: loginData.email,
+                              id: loginData.id,
+                              success: true
+                          })
                       }
             })
             .catch(err => {
@@ -128,13 +177,50 @@ app.post('/authorize', (req, res) => {
 })
 
 
-    // 4. Profile Page
+// 4. Logout Page
 
-app.get('/profile', (req, res) => {
-    // console.log('req.body in profile', req.body);
+app.get('/logout', function(req, res) {
+    console.log('in server logout route', req.session.user);
+  req.session = null;
+  res.redirect('/welcome/')
+});
+
+
+// 5. Part3
+app.get('/user', (req, res) => {
+
+    res.json(req.session.user)
+    // database.getUser(req.ssession.user.id)
+    // .then(user => {
+    //     res.json(user)
+    // })
 })
 
-// 1. Main route
+
+// 6. Uploading images
+app.post('/upload', uploader.single('file'), (req, res) => {
+    if (req.file) {
+        s3.upload(req.file)
+        .then(()  => {
+            database.uploadImages(req.file.filename, req.session.user.id)
+            .then(result=> {
+                console.log('result after uploading images?', result);
+                res.json(result);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+    }
+})
+
+
+
+// 1. Fallback route
 app.get('*', function(req, res){
     if(!req.session.user && req.session.url != '/'){
         res.redirect('/')
@@ -145,6 +231,9 @@ app.get('*', function(req, res){
     }
     res.sendFile(__dirname + '/index.html');
 });
+
+
+
 //=================== setting up server ========================================//
 app.listen(8080, function() {
     console.log("I'm listening.")
