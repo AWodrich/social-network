@@ -66,13 +66,36 @@ main {
 
 
 
-/* After Login / Personal Page */
+/* After Login / Profile Page */
 .profileImg {
     position: absolute;
     top: 20px;
     left: 1280px;
     width: 60px;
     height: auto;
+}
+
+.profilePic2 {
+    position: absolute;
+    width: 200px;
+    height: auto;
+}
+
+.firstLast {
+    position: relative;
+    text-decoration: underline;
+    top: 60px;
+    left: 25%;
+}
+
+.linkToAddBio {
+    position: relative;
+    top: 80px;
+    left: 25%;
+}
+
+.wrapFirstLastLinkAddBio {
+    width: 1000px;
 }
 
 @media only screen and (max-width: 800px) {

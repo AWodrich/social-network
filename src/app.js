@@ -47,6 +47,7 @@ export class App extends Component {
         const children = React.cloneElement(this.props.children, {
             first,
             last,
+            imgUrl,
             showUploader: this.showUploader
         });
 
@@ -61,7 +62,7 @@ export class App extends Component {
                 {children}
                 {this.state.uploaderIsVisible && <UploadImage />}
                 <Logo />
-                <Bio showBio={bio}/>
+                <Profile first={first} last={last} imgUrl={imgUrl}/>
                 <ProfilePic showUploader={this.showUploader} imgUrl={imgUrl} />
             </div>
         )
@@ -151,6 +152,35 @@ export class UploadImage extends Component {
 }
 
 
+// Profile Component displaying profilePic, first and last name, link to add bio
+
+
+export class Profile extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            first: '',
+            last: '',
+            img: ''
+        }
+    }
+    hide(){
+
+    }
+
+    render() {
+        console.log('props in profile component', this.props);
+        return(
+            <div className="wrapFirstLastLinkAddBio">
+            <img className="profilePic2"src={this.props.imgUrl} />
+            <h3 className="firstLast">{this.props.first} {this.props.last}</h3>
+            <Link onClick={hide} className="linkToAddBio" to='/add-bio'>Add Bio here</Link>
+            </div>
+        )
+    }
+}
+
+
 
 // Update Bio Component
 
@@ -171,9 +201,9 @@ export class Bio extends Component {
         axios.post('/update-bio', this.state)
         .then(result => {
             // console.log('result?', result.data.newBio);
-            // this.setState({
-            //     showBio: result.data.newBio
-            // })
+            this.setState({
+                showBio: result.data.newBio
+            })
 
             location.replace('/')
             // console.log('after updating bio on client side now', result.data);
@@ -184,11 +214,15 @@ export class Bio extends Component {
 
     }
     componentWillReceiveProps(nextProps) {
-        console.log('comparing props values?', nextProps);
-        console.log('old value?', this.props.showBio, '///', this.state.showBio);
+        // console.log('comparing props values?', nextProps);
+        // console.log('old value?', this.props.showBio, '///', this.state.showBio);
         this.setState({
             showBio: nextProps.showBio
         })
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+        // console.log('what is nextProps', nextProps);
+        // console.log('what is nextState', nextState);
     }
     // componentDidUpdate() {
     //     this.setBio();
@@ -197,8 +231,8 @@ export class Bio extends Component {
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     render(){
-        console.log('bio-set state-------------', this.state);
-        console.log('props from app',this.props );
+        // console.log('bio-set state-------------', this.state);
+        // console.log('props from app',this.props );
         // if(this.props.showBio == null) {
         //     this.props.showBio = 'No data added'
         // }
@@ -206,7 +240,7 @@ export class Bio extends Component {
             <div>
                 <h3>Bio:</h3>
                 <textarea onChange={this.onChange} rows="8" cols="80">{this.props.showBio}</textarea>
-                <button onClick={this.setBio}>Update Bio</button>
+                <button onClick={this.setBio}>Save</button>
             </div>
         )
     }

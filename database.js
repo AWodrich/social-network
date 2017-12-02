@@ -31,11 +31,9 @@ exports.storeRegistrationData = (first, last, email, hashedPassword, imgUrl) => 
 
 exports.getLoginCreds = (email) => {
     console.log('in database', email);
-    var q = `SELECT users.email, users.hashed_password, users.id, images.id AS imgId, images.image
+    var q = `SELECT email, hashed_password, id, image, bios
             FROM users
-            LEFT JOIN images
-            ON users.id = images.user_id
-            WHERE users.email = $1`
+            WHERE email = $1`
     var params = [email]
     return db.query(q, params)
     .then(data => {

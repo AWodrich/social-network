@@ -153,9 +153,6 @@ app.post('/authorize', (req, res) => {
     } else {
         database.getLoginCreds(email)
         .then(loginData => {
-            // console.log('loginData', loginData.imgid == true);
-            // console.log('loginData', loginData);
-            // console.log('logindata hashed_password', loginData.hashed_password);
             pw.checkPassword(password, loginData.hashed_password).then(doesMatch => {
                       if(!doesMatch) {
                           res.json({success:false})
