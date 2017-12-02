@@ -18,7 +18,7 @@ export class App extends Component {
     }
     componentDidMount() {
         axios.get('/user').then(({data}) => {
-            console.log('do i get bios as well?++++', data);
+            // console.log('do i get bios as well?++++', data);
             this.setState({
                 first: data.first,
                 last: data.last,
@@ -35,14 +35,14 @@ export class App extends Component {
 
     render() {
         var { first, last, imgUrl, bio } = this.state;
-
+        // console.log('bio', bio);
         if(imgUrl == null) {
             imgUrl = '/defaultProfileImg.jpg'
         }
-        if(bio == null || bio == "No bio added") {
-            bio = "No bio added"
-        }
-        console.log('bio///////////////////////////', bio);
+        // if(bio == null) {
+        //     bio = "No bio added"
+        // }
+        // console.log('bio///////////////////////////', bio);
 
         const children = React.cloneElement(this.props.children, {
             first,
@@ -170,14 +170,38 @@ export class Bio extends Component {
         e.preventDefault();
         axios.post('/update-bio', this.state)
         .then(result => {
-            // location.replace('/')
-            console.log('after updating bio on client side now', result);
+            // console.log('result?', result.data.newBio);
+            // this.setState({
+            //     showBio: result.data.newBio
+            // })
+
+            location.replace('/')
+            // console.log('after updating bio on client side now', result.data);
+            // this.setState({
+            //     showBio: result.data.newBio
+            // })
         })
 
     }
+    componentWillReceiveProps(nextProps) {
+        console.log('comparing props values?', nextProps);
+        console.log('old value?', this.props.showBio, '///', this.state.showBio);
+        this.setState({
+            showBio: nextProps.showBio
+        })
+    }
+    // componentDidUpdate() {
+    //     this.setBio();
+    // }
+
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     render(){
+        console.log('bio-set state-------------', this.state);
+        console.log('props from app',this.props );
+        // if(this.props.showBio == null) {
+        //     this.props.showBio = 'No data added'
+        // }
         return(
             <div>
                 <h3>Bio:</h3>

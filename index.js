@@ -198,6 +198,9 @@ app.get('/user', (req, res) => {
     .then(results => {
         console.log('results, after get user info', results);
         const { first, last, bios, image } = results
+        if(bios == null) {
+            bios = 'no data added'
+        }
         res.json({
             first,
             last,
@@ -240,7 +243,8 @@ app.post('/update-bio', (req, res) => {
     database.updatedBio(req.body.updatedBio, req.session.user.id)
     .then(results => {
         res.json({
-            success:true
+            success:true,
+            newBio:req.body.updatedBio
         })
     })
 })
