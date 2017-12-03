@@ -5,7 +5,7 @@ import Welcome from './welcome';
 import Login from './login';
 import Register from './register';
 import { Home } from './home';
-import { App, Logo, UploadImage, ProfilePic, Bio, Profile } from './app';
+import { App, Logo, UploadImage, ProfilePic, Bio, Profile, OtherUsers } from './app';
 
 
 
@@ -28,6 +28,7 @@ const loggedInRouter = (
             <Route path="/logo" component={Logo} />
             <Route path="/profile-img" component={ProfilePic} />
             <Route path="/add-bio" component={Bio} />
+            <Route path="/user/:id" component={OtherUsers} />
             <IndexRoute component={Profile} />
         </Route>
     </Router>

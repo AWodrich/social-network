@@ -239,3 +239,27 @@ export class Bio extends Component {
         )
     }
 }
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// View OtherUsers Profiles
+
+export class OtherUsers extends Component {
+    constructor(props) {
+        super(props)
+        this.state={}
+    }
+    componentDidMount() {
+        let id = this.props.params.id
+        console.log(this.props.params.id);
+        axios.get('/opp.json/' + id).then(({data}) => {
+            this.setState(data);
+            console.log('state', this.state);
+        })
+    }
+
+    render(){
+        return(
+            <Profile />
+        )
+    }
+}
