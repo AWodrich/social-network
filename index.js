@@ -195,9 +195,6 @@ app.get('/user', (req, res) => {
     .then(results => {
         console.log('results, after get user info', results);
         const { first, last, bios, image } = results
-        if(bios == null) {
-            bios = 'no data added'
-        }
         res.json({
             first,
             last,
@@ -205,6 +202,9 @@ app.get('/user', (req, res) => {
             id: req.session.user.id,
             bios
         })
+    })
+    .catch(err => {
+        console.log(err);
     })
 })
 
@@ -237,11 +237,12 @@ app.post('/upload', uploader.single('file'), (req, res) => {
 // 7. Updating Bio information
 
 app.post('/update-bio', (req, res) => {
-    database.updatedBio(req.body.updatedBio, req.session.user.id)
+    database.updatedBio(req.body.bio, req.session.user.id)
     .then(results => {
+        console.log('getting results back from database?', results.rows);
         res.json({
             success:true,
-            newBio:req.body.updatedBio
+            newBio: req.body.bio
         })
     })
 })

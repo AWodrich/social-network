@@ -23,12 +23,12 @@ const notLoggedInRouter = (
 const loggedInRouter = (
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-            <IndexRoute component={Home} />
+            <Route path="/home" component={Home} />
             <Route path="/upload" component={UploadImage} />
             <Route path="/logo" component={Logo} />
             <Route path="/profile-img" component={ProfilePic} />
             <Route path="/add-bio" component={Bio} />
-            <Route path="/profile" component={Profile} />
+            <IndexRoute component={Profile} />
         </Route>
     </Router>
 )

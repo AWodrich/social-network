@@ -114,3 +114,31 @@ main {
     position: relative;
     top: -100px;
 }
+
+.wrapUploadImage {
+    position: relative;
+    width: 500px;
+    text-align: center;
+    height: 200px;
+    background-color: white;
+    top: -100px;
+    border-radius: 50px;
+    border: 1px solid orange;
+    left: 35%;
+}
+
+.wrapFirstLastLinkAddBio > h4 {
+    position: relative;
+    top: 60px;
+    left: 25%;
+}
+
+.addingBioWrapper {
+    position: relative;
+    width: 500px;
+    height: 200px;
+    background-color: white;
+    left: 230px;
+    border-radius: 50px;
+    border: 1px solid orange;
+}
