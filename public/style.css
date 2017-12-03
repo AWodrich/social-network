@@ -142,3 +142,9 @@ main {
     border-radius: 50px;
     border: 1px solid orange;
 }
+
+.bioOtherUser {
+    position: absolute;
+    top: 280px;
+    left: 625px;
+}

@@ -172,7 +172,7 @@ export class Profile extends Component {
     }
 
     render() {
-        console.log('props in profile component', this.props);
+        console.log('props in profile component', this.props.imgUrl);
         return(
             <div>
                 <div className="wrapLogoH1">
@@ -250,16 +250,22 @@ export class OtherUsers extends Component {
     }
     componentDidMount() {
         let id = this.props.params.id
-        console.log(this.props.params.id);
-        axios.get('/opp.json/' + id).then(({data}) => {
-            this.setState(data);
-            console.log('state', this.state);
+        // console.log('params.id',this.props.params.id);
+        axios.get('/user.json/' + id).then(({data}) => {
+            this.setState(data)
         })
     }
 
     render(){
+        console.log('this.state.image', this.state.image, 'or props', this.props);
         return(
-            <Profile />
+            <div className="profile">
+                <h1>Welcome, {this.state.first} {this.state.last}, to your webpage.</h1>
+                <img className="profileImg" src={this.state.image} />
+                <img className="profilePic2" src={this.state.image} />
+                <h3 className="firstLast">{this.state.first} {this.state.last}</h3>
+                <h4 className="bioOtherUser">{this.state.bios}</h4>
+            </div>
         )
     }
 }

@@ -248,6 +248,21 @@ app.post('/update-bio', (req, res) => {
 })
 
 
+// 8. Get data from specific user by his/her id
+
+app.get('/user.json/:id', (req, res) => {
+    database.getSpecificUserData(req.params.id)
+    .then(data => {
+        console.log('data after specific search', data);
+        res.json(data)
+    })
+    .catch(err => {
+        console.log(err);
+    })
+
+})
+
+
 
 // 1. Fallback route, the fail safe
 // This route has to go on the bottom of this file.

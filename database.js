@@ -93,5 +93,16 @@ exports.updatedBio = (text, id) => {
     .catch(err => {
         console.log(err);
     })
+}
 
+
+exports.getSpecificUserData = (id) => {
+    var q = `SELECT * FROM users
+            WHERE id = $1`
+    var params = [id]
+    return db.query(q, params)
+    .then(userdata => {
+        // console.log('what is the user data?', userdata.rows[0]);
+        return userdata.rows[0]
+    })
 }
