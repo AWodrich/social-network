@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router';
-import Welcome from './welcome';
-import Login from './login';
-import Register from './register';
-import { Home } from './home';
+import { Welcome, Default, Register, Login } from './welcome';
 import { App, Logo, UploadImage, ProfilePic, Bio, Profile, OtherUsers } from './app';
 
 
@@ -15,7 +12,8 @@ const notLoggedInRouter = (
     <Router history={hashHistory}>
         <Route path="/" component={Welcome}>
             <Route path="/login" component={Login} />
-            <IndexRoute component={Register} />
+            <Route path="/register" component={Register} />
+            <IndexRoute component={Default} />
   	    </Route>
     </Router>
 );
@@ -23,7 +21,6 @@ const notLoggedInRouter = (
 const loggedInRouter = (
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-            <Route path="/home" component={Home} />
             <Route path="/upload" component={UploadImage} />
             <Route path="/logo" component={Logo} />
             <Route path="/profile-img" component={ProfilePic} />

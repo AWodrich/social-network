@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Home } from './home';
+import axios from './axios';
 import { Link } from 'react-router';
 
 
@@ -24,7 +23,8 @@ export class App extends Component {
                 first: data.first,
                 last: data.last,
                 imgUrl: data.imageUrl,
-                bio: data.bios
+                bio: data.bios,
+                id: data.id
             });
         })
     }
@@ -40,7 +40,8 @@ export class App extends Component {
     }
 
     render() {
-        let { first, last, imgUrl, bio } = this.state;
+        console.log('this.props?', this.props, 'this.state', this.state);
+        let { first, last, imgUrl, bio, id } = this.state;
         if(imgUrl == null) {
             imgUrl = '/defaultProfileImg.jpg'
         }
@@ -50,6 +51,7 @@ export class App extends Component {
             last,
             imgUrl,
             bio,
+            id,
             showUploader: this.showUploader,
             setBio: this.setBio
         });
@@ -88,7 +90,7 @@ export class Logo extends Component {
 
         return(
             <div>
-                <img className="logoImg" src="/logo.jpg" />
+                <img className="logoImg" src="/bitcoin-logo.jpg" />
             </div>
         )
     }
@@ -172,7 +174,7 @@ export class Profile extends Component {
     }
 
     render() {
-        console.log('props in profile component', this.props.imgUrl);
+        // console.log('props in profile component', this.props.imgUrl);
         return(
             <div>
                 <div className="wrapLogoH1">
@@ -252,20 +254,25 @@ export class OtherUsers extends Component {
         let id = this.props.params.id
         // console.log('params.id',this.props.params.id);
         axios.get('/user.json/' + id).then(({data}) => {
+            console.log('other user image', data);
             this.setState(data)
         })
     }
 
     render(){
-        console.log('this.state.image', this.state.image, 'or props', this.props);
+        console.log('props in OtherUser', this.props);
+        // console.log('this.state.image', this.state.image, 'or props', this.props);
         return(
             <div className="profile">
                 <h1>Welcome, {this.state.first} {this.state.last}, to your webpage.</h1>
                 <img className="profileImg" src={this.state.image} />
-                <img className="profilePic2" src={this.state.image} />
+                <img className="otherProfilePic2" src={this.state.image} />
                 <h3 className="firstLast">{this.state.first} {this.state.last}</h3>
                 <h4 className="bioOtherUser">{this.state.bios}</h4>
+
             </div>
         )
     }
 }
+
+// <button>{condition && text inside button}</button>

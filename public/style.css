@@ -4,6 +4,27 @@
     background-color: orange;
 }
 
+.welcomeBackground {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+.clickForRegister {
+    position: absolute;
+    width: 270px;
+    height: 260px;
+    border-radius: 150px;
+    background-color: transparent;
+    z-index: 3;
+    left: 580px;
+    top: 280px;
+}
+
+
 body {
     display: grid;
     grid-template-columns: 100px auto 100px;
@@ -45,12 +66,50 @@ main {
 /* Registration Page */
 
 .register {
+    width: 350px;
+    text-align: center;
+    height: 300px;
+    border: 1px dotted #e04903;
+    position: absolute;
+    /*left: 3%;*/
+    top: 170px;
+    background-color: white;
+    z-index: 3;
+    animation: right 3s forwards;
+    border-radius: 50px;
+}
+
+@keyframes right {
+  from {
+    right: -400px;
+  }
+  to {
+    right: 100px;
+  }
+}
+
+.input {
     width: 150px;
-    height: 100px;
-    border: 1px solid yellow;
+    height: 30px;
+    top: 20px;
     position: relative;
-    left: 35%;
-    top: 200px;
+    border-color: #e04903;
+}
+
+
+.goToLogin {
+    position: relative;
+    top: 100px;
+}
+
+button {
+    position: relative;
+    top: 30px;
+}
+
+button :hover {
+    background-color: #e04903;
+    /*animation: opacity 2s ease-in;*/
 }
 
 /* After Registration / Profile Page */
@@ -71,8 +130,8 @@ main {
     position: absolute;
     top: 20px;
     left: 1280px;
-    width: 60px;
-    height: auto;
+    width: auto;
+    height: 80px;;
 }
 
 .profilePic2 {
@@ -147,4 +206,15 @@ main {
     position: absolute;
     top: 280px;
     left: 625px;
+}
+
+
+/* Other profile page */
+
+.otherProfilePic2 {
+    position: absolute;
+    width: auto;
+    height: 200px;
+    left: 300px;
+    top: 250px;
 }

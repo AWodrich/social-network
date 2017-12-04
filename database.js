@@ -1,5 +1,9 @@
 const spicedPg = require('spiced-pg');
 const pw = require('./password.js');
+const config = require('./config.json');
+const NONE = 0, PENDING = 1, ACCEPTED = 2, CANCELED = 3, TERMINATED = 4, REJECTED = 5;
+
+// ${PENDING}
 
 
 if(process.env.DATABASE_URL){
@@ -102,6 +106,7 @@ exports.getSpecificUserData = (id) => {
     var params = [id]
     return db.query(q, params)
     .then(userdata => {
+        userdata.rows[0].image = config.s3Url + userdata.rows[0].image
         // console.log('what is the user data?', userdata.rows[0]);
         return userdata.rows[0]
     })

@@ -88,8 +88,12 @@ app.use(cookieSession({
 app.use(bodyParser.json())
 app.use(compression());
 
-
-
+// putting csrf token into cookie through this middleware
+// app.use(csrf());
+// app.use(function(req, res, next){
+//     res.cookie('mytoken', req.csrfToken());
+//     next();
+// });
 // ============== routes =================
 
 // 1. Main Page
