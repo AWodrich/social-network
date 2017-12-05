@@ -99,7 +99,7 @@ exports.updatedBio = (text, id) => {
     })
 }
 
-
+// 6. Get Other User Details
 exports.getSpecificUserData = (id) => {
     var q = `SELECT * FROM users
             WHERE id = $1`
@@ -110,4 +110,9 @@ exports.getSpecificUserData = (id) => {
         // console.log('what is the user data?', userdata.rows[0]);
         return userdata.rows[0]
     })
+}
+
+// 7. Check Friendship status
+exports.checkFriendStatus = () => {
+
 }

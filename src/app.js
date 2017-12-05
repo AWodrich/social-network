@@ -18,7 +18,7 @@ export class App extends Component {
     }
     componentDidMount() {
         axios.get('/user').then(({data}) => {
-            console.log('do i get bios as well?++++', data);
+            // console.log('do i get bios as well?++++', data);
             this.setState({
                 first: data.first,
                 last: data.last,
@@ -39,8 +39,9 @@ export class App extends Component {
         })
     }
 
+
     render() {
-        console.log('this.props?', this.props, 'this.state', this.state);
+
         let { first, last, imgUrl, bio, id } = this.state;
         if(imgUrl == null) {
             imgUrl = '/defaultProfileImg.jpg'
@@ -54,6 +55,7 @@ export class App extends Component {
             id,
             showUploader: this.showUploader,
             setBio: this.setBio
+
         });
 
         if(!this.state) {
@@ -174,6 +176,8 @@ export class Profile extends Component {
     }
 
     render() {
+
+
         // console.log('props in profile component', this.props.imgUrl);
         return(
             <div>
@@ -251,17 +255,26 @@ export class OtherUsers extends Component {
         this.state={}
     }
     componentDidMount() {
+        console.log('__________',this.props);
         let id = this.props.params.id
-        // console.log('params.id',this.props.params.id);
         axios.get('/user.json/' + id).then(({data}) => {
-            console.log('other user image', data);
             this.setState(data)
         })
     }
+    //
+    // checkFriendStatus(data){
+    //     this.setState({
+    //         active: true,
+    //         data: data
+    //     })
+    // }
 
     render(){
-        console.log('props in OtherUser', this.props);
-        // console.log('this.state.image', this.state.image, 'or props', this.props);
+
+        // const children = React.cloneElement(this.props.children, {
+        //     checkFriendStatus: this.state.checkFriendStatus
+        // });
+        // console.log('props in OtherUser', this.props);
         return(
             <div className="profile">
                 <h1>Welcome, {this.state.first} {this.state.last}, to your webpage.</h1>
@@ -269,10 +282,39 @@ export class OtherUsers extends Component {
                 <img className="otherProfilePic2" src={this.state.image} />
                 <h3 className="firstLast">{this.state.first} {this.state.last}</h3>
                 <h4 className="bioOtherUser">{this.state.bios}</h4>
-
+                <button onClick={this.checkFriendStatus}>friends</button>
+                {this.state.active && <FriendButton />}
+                
             </div>
         )
     }
 }
 
 // <button>{condition && text inside button}</button>
+
+export class FriendButton extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            status: ''
+        }
+    }
+
+    componentDidMount() {
+        // console.log('this.props in FriendButton', this.props);
+        axios.get('/friend-status')
+        .then(results => {
+            console.log(results);
+            // this.props.checkFriendStatus(results)
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    render() {
+        return(
+            <h1>Checking Friendship</h1>
+        )
+    }
+}

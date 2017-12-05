@@ -267,6 +267,21 @@ app.get('/user.json/:id', (req, res) => {
 })
 
 
+// Check Friendship status
+
+app.get('/friend-status', (req, res) => {
+    // console.log('req.body for checking Friend Status', this.req.body);
+    console.log('ids==========', req.params, req.session.user);
+    database.checkFriendStatus()
+    .then(results => {
+        console.log(results);
+    })
+    .catch(err => {
+
+    })
+})
+
+
 
 // 1. Fallback route, the fail safe
 // This route has to go on the bottom of this file.
