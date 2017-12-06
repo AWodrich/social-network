@@ -187,7 +187,6 @@ app.post('/authorize', (req, res) => {
 // 4. Logout Page
 
 app.get('/logout', function(req, res) {
-    console.log('in server logout route', req.session.user);
   req.session = null;
   res.redirect('/welcome/')
 });
@@ -197,8 +196,7 @@ app.get('/logout', function(req, res) {
 app.get('/user', (req, res) => {
     database.getUserInfo(req.session.user.id)
     .then(results => {
-        console.log('results, after get user info', results);
-        const { first, last, bios, image } = results
+        const { first, last, bios, image, id } = results
         res.json({
             first,
             last,
@@ -243,7 +241,6 @@ app.post('/upload', uploader.single('file'), (req, res) => {
 app.post('/update-bio', (req, res) => {
     database.updatedBio(req.body.bio, req.session.user.id)
     .then(results => {
-        console.log('getting results back from database?', results.rows);
         res.json({
             success:true,
             newBio: req.body.bio
@@ -257,7 +254,6 @@ app.post('/update-bio', (req, res) => {
 app.get('/user.json/:id', (req, res) => {
     database.getSpecificUserData(req.params.id)
     .then(data => {
-        console.log('data after specific search', data);
         res.json(data)
     })
     .catch(err => {
@@ -269,15 +265,31 @@ app.get('/user.json/:id', (req, res) => {
 
 // Check Friendship status
 
-app.get('/friend-status', (req, res) => {
-    // console.log('req.body for checking Friend Status', this.req.body);
-    console.log('ids==========', req.params, req.session.user);
-    database.checkFriendStatus()
+app.get('/friend-status/:id', (req, res) => {
+    const recipientId = req.params.id;
+    const loggedInUserId = req.session.user.id;
+    database.checkFriendStatus(recipientId, loggedInUserId)
     .then(results => {
         console.log(results);
+        if (!results) {
+            res.json({status: 0})
+        }
+        res.json({status:results})
     })
     .catch(err => {
+        console.log(err);
+    })
+})
 
+
+// Update Friendship status
+
+app.post('/friend-status/:id/update', (req, res) => {
+    var newStatus = req.body.status + 1;
+    console.log('new Status', newStatus);
+    database.updateFriendshipStatus(newStatus, req.session.user.id, req.params.id)
+    .then(result => {
+        console.log('result after updating',result)
     })
 })
 

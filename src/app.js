@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import axios from './axios';
 import { Link } from 'react-router';
+import { checkFriendStatus, getUserInfos } from './actions';
+import { connect } from 'react-redux';
+import Profile from './profile';
 
 
 
 // props.children ist coming from react-Router
-
-
 // Container App
+
 
 export class App extends Component {
     constructor(props) {
@@ -15,18 +17,10 @@ export class App extends Component {
         this.state = {};
         this.showUploader = this.showUploader.bind(this)
         this.setBio = this.setBio.bind(this)
+        this.checkForRequests = this.checkForRequests.bind(this)
     }
     componentDidMount() {
-        axios.get('/user').then(({data}) => {
-            // console.log('do i get bios as well?++++', data);
-            this.setState({
-                first: data.first,
-                last: data.last,
-                imgUrl: data.imageUrl,
-                bio: data.bios,
-                id: data.id
-            });
-        })
+        this.props.dispatch(getUserInfos())
     }
     showUploader() {
         this.setState({
@@ -39,22 +33,35 @@ export class App extends Component {
         })
     }
 
+    setFriendStatus(newStatus){
+
+    }
+
+    checkForRequests(data) {
+
+    }
+
 
     render() {
+        if (!this.props.user) {
+            return null
+        }
 
-        let { first, last, imgUrl, bio, id } = this.state;
-        if(imgUrl == null) {
-            imgUrl = '/defaultProfileImg.jpg'
+        let { first, last, imageUrl, bios, id, status } = this.props.user;
+
+        if(!imageUrl) {
+            imageUrl = '/defaultProfileImg.jpg'
         }
 
         const children = React.cloneElement(this.props.children, {
             first,
             last,
-            imgUrl,
-            bio,
+            imgUrl: imageUrl,
+            bio: bios,
             id,
             showUploader: this.showUploader,
-            setBio: this.setBio
+            setBio: this.setBio,
+            checkForRequests: this.checkForRequests
 
         });
 
@@ -69,11 +76,20 @@ export class App extends Component {
             <Logo />
                 {children}
                 {this.state.uploaderIsVisible && <UploadImage />}
-                <ProfilePic showUploader={this.showUploader} imgUrl={imgUrl} />
+                <ProfilePic showUploader={this.showUploader} imgUrl={imageUrl} />
             </div>
         )
     }
 }
+
+const mapStateToProps = function(state) {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(App);
+
 // <Bio showBio={this.showBio} />
 
 
@@ -167,36 +183,6 @@ export class UploadImage extends Component {
 // Profile Component displaying profilePic, first and last name, link to add bio
 
 
-export class Profile extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-
-        }
-    }
-
-    render() {
-
-
-        // console.log('props in profile component', this.props.imgUrl);
-        return(
-            <div>
-                <div className="wrapLogoH1">
-                    <h1>Welcome, {this.props.first} {this.props.last}, to your Profile Page</h1>
-                    <a href="/logout">Logout</a>
-                </div>
-                <div className="wrapFirstLastLinkAddBio">
-                    <img className="profilePic2"src={this.props.imgUrl} />
-                    <h3 className="firstLast">{this.props.first} {this.props.last}</h3>
-                    {this.props.bio && <h4>{this.props.bio}</h4>}
-                    {this.props.bio && <Link className="linkToAddBio" to="/add-bio">Edit Bio</Link>}
-                    {!this.props.bio && <h4>No bio added</h4>}
-                    {!this.props.bio && <Link className="linkToAddBio" to="/add-bio">Add Bio</Link>}
-                </div>
-            </div>
-        )
-    }
-}
 
 
 
@@ -249,46 +235,8 @@ export class Bio extends Component {
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // View OtherUsers Profiles
 
-export class OtherUsers extends Component {
-    constructor(props) {
-        super(props)
-        this.state={}
-    }
-    componentDidMount() {
-        console.log('__________',this.props);
-        let id = this.props.params.id
-        axios.get('/user.json/' + id).then(({data}) => {
-            this.setState(data)
-        })
-    }
-    //
-    // checkFriendStatus(data){
-    //     this.setState({
-    //         active: true,
-    //         data: data
-    //     })
-    // }
 
-    render(){
-
-        // const children = React.cloneElement(this.props.children, {
-        //     checkFriendStatus: this.state.checkFriendStatus
-        // });
-        // console.log('props in OtherUser', this.props);
-        return(
-            <div className="profile">
-                <h1>Welcome, {this.state.first} {this.state.last}, to your webpage.</h1>
-                <img className="profileImg" src={this.state.image} />
-                <img className="otherProfilePic2" src={this.state.image} />
-                <h3 className="firstLast">{this.state.first} {this.state.last}</h3>
-                <h4 className="bioOtherUser">{this.state.bios}</h4>
-                <button onClick={this.checkFriendStatus}>friends</button>
-                {this.state.active && <FriendButton />}
-                
-            </div>
-        )
-    }
-}
+// {this.state.status == 0 && 'Send FriendRequest'}
 
 // <button>{condition && text inside button}</button>
 
@@ -301,11 +249,12 @@ export class FriendButton extends Component {
     }
 
     componentDidMount() {
-        // console.log('this.props in FriendButton', this.props);
-        axios.get('/friend-status')
+        console.log('getting params id from props in FriendButton', this.props);
+        axios.get('/friend-status/' + this.props.id)
         .then(results => {
-            console.log(results);
-            // this.props.checkFriendStatus(results)
+            console.log('status on client side', results.data);
+            this.props.setFriendStatus(results.data.status)
+
         })
         .catch(err => {
             console.log(err);
@@ -313,6 +262,8 @@ export class FriendButton extends Component {
     }
 
     render() {
+
+
         return(
             <h1>Checking Friendship</h1>
         )

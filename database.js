@@ -1,7 +1,8 @@
 const spicedPg = require('spiced-pg');
 const pw = require('./password.js');
 const config = require('./config.json');
-const NONE = 0, PENDING = 1, ACCEPTED = 2, CANCELED = 3, TERMINATED = 4, REJECTED = 5;
+
+
 
 // ${PENDING}
 
@@ -53,7 +54,7 @@ exports.getLoginCreds = (email) => {
 // 3. Getting User Info Data, and rendering profilePic
 
 exports.getUserInfo = (id) => {
-    var q = `SELECT first, last, bios, image
+    var q = `SELECT first, last, bios, image, id
             FROM users
             WHERE id = $1`
     var params = [id]
@@ -113,6 +114,51 @@ exports.getSpecificUserData = (id) => {
 }
 
 // 7. Check Friendship status
-exports.checkFriendStatus = () => {
+exports.checkFriendStatus = (recipient_id, loggedInUser_id) => {
+    var q = `SELECT status FROM friend_status
+            WHERE sender_id = $2
+            AND recipient_id = $1`
+    var params = [recipient_id, loggedInUser_id]
+    return db.query(q, params)
+    .then(status => {
+        return status.rows[0]
+    })
+}
 
+// 8. Update Friendship status
+exports.insertFriendStatus = (recipientId, loggedInUserId, statusMessage) => {
+    var q = `INSERT INTO friend_status (recipient_id, sender_id, status)
+            VALUES($1, $2, $3)
+            RETURNING status`
+    var params = [recipientId, loggedInUserId, statusMessage]
+    return db.query(q, params)
+    .then(insertedStatus => {
+        return insertedStatus.rows[0]
+    })
+}
+
+// 9.TestDatabase query
+
+exports.checkFriendStatusAfterLogin = (loggedInUser_id) => {
+    var q = `SELECT status FROM friend_status
+            WHERE recipient_id = $1`
+    var params = [loggedInUser_id]
+    return db.query(q, params)
+    .then(status => {
+        return status.rows[0]
+    })
+}
+
+// 10. Update friendstatus
+
+exports.updateFriendshipStatus = (newStatus, loggedInUserId, reciptientId) => {
+    var q = `UPDATE friend_status
+            SET status = $1
+            WHERE sender_id = $2
+                AND recipient_id = $3`
+    var params = [newStatus, loggedInUserId, reciptientId]
+    return db.query(q, params)
+    .then(result => {
+        return result
+    })
 }

@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS firend_status;
+DROP TABLE IF EXISTS friend_status;
 
 
 CREATE TABLE users (
