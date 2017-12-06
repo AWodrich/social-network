@@ -281,16 +281,33 @@ app.get('/friend-status/:id', (req, res) => {
     })
 })
 
+// status 1 = pending friendrequest, 2 = friendrequest canceled, 3 = friendrequest accepted, 4 = friendship terminated
 
 // Update Friendship status
 
 app.post('/friend-status/:id/update', (req, res) => {
-    var newStatus = req.body.status + 1;
-    console.log('new Status', newStatus);
-    database.updateFriendshipStatus(newStatus, req.session.user.id, req.params.id)
-    .then(result => {
-        console.log('result after updating',result)
-    })
+    console.log('req.body', req.body.status.status);
+    var newStatus;
+    if(req.body.status == 0) {
+        newStatus = req.body.status + 1
+        database.insertFriendStatus(newStatus, req.session.user.id, req.params.id)
+        .then(result => {
+            res.json(result)
+        })
+    } else if(req.body.status.status == 1) {
+        newStatus = req.body.status.status + 1;
+        database.updateFriendshipStatus(newStatus, req.session.user.id, req.params.id)
+        .then(result => {
+            res.json(result)
+        })
+    }
+    // else if(req.body.status.status == 2) {
+    //     newStatus = req.body.status.status - 2;
+    //     database.updateFriendshipStatus(newStatus, req.session.user.id, req.params.id)
+    //     .then(result => {
+    //         res.json(result)
+    //     })
+    // }
 })
 
 

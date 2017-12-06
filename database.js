@@ -126,11 +126,11 @@ exports.checkFriendStatus = (recipient_id, loggedInUser_id) => {
 }
 
 // 8. Update Friendship status
-exports.insertFriendStatus = (recipientId, loggedInUserId, statusMessage) => {
-    var q = `INSERT INTO friend_status (recipient_id, sender_id, status)
+exports.insertFriendStatus = (newStatus, loggedInUserId, recipientId) => {
+    var q = `INSERT INTO friend_status (status, sender_id, recipient_id)
             VALUES($1, $2, $3)
             RETURNING status`
-    var params = [recipientId, loggedInUserId, statusMessage]
+    var params = [newStatus, loggedInUserId, recipientId]
     return db.query(q, params)
     .then(insertedStatus => {
         return insertedStatus.rows[0]
@@ -155,7 +155,7 @@ exports.updateFriendshipStatus = (newStatus, loggedInUserId, reciptientId) => {
     var q = `UPDATE friend_status
             SET status = $1
             WHERE sender_id = $2
-                AND recipient_id = $3`
+            AND recipient_id = $3`
     var params = [newStatus, loggedInUserId, reciptientId]
     return db.query(q, params)
     .then(result => {

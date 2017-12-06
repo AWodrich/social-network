@@ -33,14 +33,14 @@ export class OtherUser extends Component {
         if (!this.props.otherUserInfo) {
             return null
         }
-        console.log('==========give me all props here', this.props.statusFriendship);
+        console.log('this.props.', this.props);
 
         let { first, last, image, bios, id } = this.props.otherUserInfo;
-        // let { status } = this.props.statusFriendship.status
         let status = this.props.statusFriendship;
         if(!image) {
             image = '/defaultProfileImg.jpg'
         }
+
         return(
             <div className="profile">
                 <h1>Welcome, {first} {last}, to your webpage.</h1>
@@ -49,10 +49,13 @@ export class OtherUser extends Component {
                 <h3 className="firstLast">{first} {last}</h3>
                 <h4 className="bioOtherUser">{bios}</h4>
                 {status == 0 && <button onClick={this.updateFriendshipStatus}>Send Friend Request</button>}
+                {status.status == 1 && <button onClick={this.updateFriendshipStatus}>Cancel Friend Request</button>}
+
             </div>
         )
     }
 }
+
 
 
 const mapStateToProps = function(state) {
