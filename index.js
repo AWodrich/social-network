@@ -274,7 +274,7 @@ app.get('/friend-status/:id', (req, res) => {
         if (!results) {
             res.json({status: 0})
         }
-        res.json({status:results})
+        res.json({status:results.status})
     })
     .catch(err => {
         console.log(err);
@@ -289,18 +289,18 @@ app.post('/friend-status/:id/update', (req, res) => {
     console.log('req.body', req.body.status.status);
     var newStatus;
     if(req.body.status == 0) {
-        newStatus = req.body.status + 1
-        database.insertFriendStatus(newStatus, req.session.user.id, req.params.id)
+
+        database.insertFriendStatus(1, req.session.user.id, req.params.id)
         .then(result => {
-            res.json(result)
+            res.json({status: 1})
         })
-    } else if(req.body.status.status == 1) {
-        newStatus = req.body.status.status + 1;
-        database.updateFriendshipStatus(newStatus, req.session.user.id, req.params.id)
+    } else if(req.body.status == 1) {
+        database.deleteFriendStatus(req.session.user.id, req.params.id)
         .then(result => {
-            res.json(result)
+            res.json({status: 0})
         })
     }
+    // database.updateFriendshipStatus(newStatus, req.session.user.id, req.params.id)
     // else if(req.body.status.status == 2) {
     //     newStatus = req.body.status.status - 2;
     //     database.updateFriendshipStatus(newStatus, req.session.user.id, req.params.id)

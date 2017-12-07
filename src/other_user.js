@@ -10,6 +10,7 @@ export class OtherUser extends Component {
         // this.checkFriendStatus = this.checkFriendStatus.bind(this)
         // this.setFriendStatus = this.setFriendStatus.bind(this)
         this.updateFriendshipStatus = this.updateFriendshipStatus.bind(this);
+        // this.getButtonTxt = this.getButtonTxt.bind(this);
     }
     componentDidMount() {
         let id = this.props.params.id
@@ -20,13 +21,27 @@ export class OtherUser extends Component {
     updateFriendshipStatus(){
         let id = this.props.params.id
         console.log('do i have access to all props', this.props);
+        console.log('++++++', this.props.statusFriendship);
         this.props.dispatch(updateFriendshipStatus(id, this.props.statusFriendship))
     }
 
-    checkFriendStatus(){
-        this.setState({
-            active: true
-        })
+    // checkFriendStatus(){
+    //     this.setState({
+    //         active: true
+    //     })
+    // }
+
+    getButtonTxt() {
+        console.log('this.props.status===========', this.props.statusFriendship);
+        let status = this.props.statusFriendship;
+        switch(status) {
+            case 0:
+                return 'Add Friend';
+                break;
+            case 1:
+                return 'Cancel Request'
+                break;
+        }
     }
 
     render(){
@@ -35,11 +50,22 @@ export class OtherUser extends Component {
         }
         console.log('this.props.', this.props);
 
+
         let { first, last, image, bios, id } = this.props.otherUserInfo;
         let status = this.props.statusFriendship;
+        console.log('status is in other user', status);
         if(!image) {
             image = '/defaultProfileImg.jpg'
         }
+
+        // switch(status) {
+        //     case 0:
+        //         return 'Add Friend';
+        //         break;
+        //     case 1:
+        //         return 'Cancel Request'
+        //         break;
+        // }
 
         return(
             <div className="profile">
@@ -48,9 +74,7 @@ export class OtherUser extends Component {
                 <img className="otherProfilePic2" src={image} />
                 <h3 className="firstLast">{first} {last}</h3>
                 <h4 className="bioOtherUser">{bios}</h4>
-                {status == 0 && <button onClick={this.updateFriendshipStatus}>Send Friend Request</button>}
-                {status.status == 1 && <button onClick={this.updateFriendshipStatus}>Cancel Friend Request</button>}
-
+                <button onClick={this.updateFriendshipStatus}>{this.getButtonTxt()}</button>
             </div>
         )
     }

@@ -115,13 +115,14 @@ exports.getSpecificUserData = (id) => {
 
 // 7. Check Friendship status
 exports.checkFriendStatus = (recipient_id, loggedInUser_id) => {
-    var q = `SELECT status FROM friend_status
-            WHERE sender_id = $2
-            AND recipient_id = $1`
+    var q = `SELECT * FROM friend_status
+            WHERE sender_id = $2 AND recipient_id = $1
+            OR recipient_id = $2 AND sender_id = $1`
     var params = [recipient_id, loggedInUser_id]
     return db.query(q, params)
-    .then(status => {
-        return status.rows[0]
+    .then(data => {
+        console.log('server side data', data);
+        return data.rows[0]
     })
 }
 
@@ -161,4 +162,18 @@ exports.updateFriendshipStatus = (newStatus, loggedInUserId, reciptientId) => {
     .then(result => {
         return result
     })
+}
+
+// 11. delete Friend
+
+exports.deleteFriendStatus = (idSender, idRecipient) => {
+    var q = `DELETE FROM friend_status
+        WHERE sender_id = $1 AND recipient_id = $2
+        OR recipient_id = $1 AND sender_id = $2`
+    var params = [idSender, idRecipient]
+    return db.query(q, params)
+    .then(result => {
+        return result;
+    })
+
 }

@@ -1,14 +1,15 @@
 import axios from 'axios';
 
-export function checkFriendStatus() {
-    return axios.get('/status')
-        .then(function({ data }) {
-            return {
-                type: 'RECEIVE_FRIENDSTATUS',
-                users: data
-            };
-        });
-}
+// export function checkFriendStatus() {
+//     return axios.get('/status')
+//         .then(function({ data }) {
+//             console.log('data?+++++', data);
+//             return {
+//                 type: 'RECEIVE_FRIENDSTATUS',
+//                 users: data
+//             };
+//         });
+// }
 export function getUserInfos() {
     return axios.get('/user')
         .then(({data}) => {
