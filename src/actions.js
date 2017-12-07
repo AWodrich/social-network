@@ -23,7 +23,6 @@ export function getUserInfos() {
 export function getOtherUserInfo(id) {
     return axios.get('/user.json/' + id)
         .then(({data}) => {
-            console.log('getting other user info?', data);
             return {
                 type: 'OTHER_USER_INFO',
                 otherUserInfo: data
@@ -35,20 +34,23 @@ export function getOtherUserInfo(id) {
 export function getFriendshipStatus(id) {
     return axios.get('/friend-status/' + id)
         .then(({data}) => {
-            console.log('getting friend status in action creator after axios request', data);
             return {
                 type: 'CHECK_FRIEND_STATUS',
-                statusFriendship: data.status
+                statusFriendship: data
             }
         })
 }
 
 export function updateFriendshipStatus(id, status) {
     console.log('inside update friendship action creator, status', status);
-    return axios.post('/friend-status/'+ id + '/update', {status})
+    return axios.post('/friend-status/'+ id + '/update', {status:status})
         .then(({data}) => {
             console.log('after updating friend request', data);
-            location.replace('/user/'+id)
+            return {
+                type: 'UPDATE_FRIEND_STATUS',
+                statusFriendship: data
+            }
+            // location.replace('/user/'+id)
         })
 }
 //

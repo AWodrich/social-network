@@ -15,7 +15,15 @@ export default function(state = {}, action) {
     }
     if(action.type == 'CHECK_FRIEND_STATUS') {
         state = Object.assign({}, state, {
-            statusFriendship: action.statusFriendship
+            statusFriendship: action.statusFriendship.status,
+            sender: action.statusFriendship.senderId,
+            recipient: action.statusFriendship.recipientId
+        })
+    }
+    if(action.type == 'UPDATE_FRIEND_STATUS') {
+        // console.log('action after update in reducer?', action);
+        state = Object.assign({}, state, {
+            statusFriendship: action.statusFriendship.status
         })
     }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { checkFriendStatus } from './actions';
+import { getFriendshipStatus } from './actions';
 
 
 export class Profile extends Component {
@@ -11,7 +11,7 @@ export class Profile extends Component {
     }
 
     componentDidMount(){
-        this.props.dispatch(checkFriendStatus())
+        this.props.dispatch(getFriendshipStatus())
     }
 
     renderButtonText(){

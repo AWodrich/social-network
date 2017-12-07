@@ -274,7 +274,7 @@ app.get('/friend-status/:id', (req, res) => {
         if (!results) {
             res.json({status: 0})
         }
-        res.json({status:results.status})
+        res.json({status:results.status, senderId: results.sender_id, recipientId: results.recipient_id})
     })
     .catch(err => {
         console.log(err);
@@ -286,18 +286,22 @@ app.get('/friend-status/:id', (req, res) => {
 // Update Friendship status
 
 app.post('/friend-status/:id/update', (req, res) => {
-    console.log('req.body', req.body.status.status);
+    console.log('req.body', req.body);
     var newStatus;
     if(req.body.status == 0) {
-
         database.insertFriendStatus(1, req.session.user.id, req.params.id)
         .then(result => {
             res.json({status: 1})
         })
-    } else if(req.body.status == 1) {
+    } else if(req.body.status == 1 || req.body.status == 4) {
         database.deleteFriendStatus(req.session.user.id, req.params.id)
         .then(result => {
             res.json({status: 0})
+        })
+    } else if(req.body.status == 3) {
+        database.updateFriendshipStatus(3, req.session.user.id, req.params.id)
+        .then(result => {
+            res.json({status: 3})
         })
     }
     // database.updateFriendshipStatus(newStatus, req.session.user.id, req.params.id)

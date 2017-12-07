@@ -121,7 +121,7 @@ exports.checkFriendStatus = (recipient_id, loggedInUser_id) => {
     var params = [recipient_id, loggedInUser_id]
     return db.query(q, params)
     .then(data => {
-        console.log('server side data', data);
+        // console.log('server side data', data);
         return data.rows[0]
     })
 }
@@ -155,8 +155,8 @@ exports.checkFriendStatusAfterLogin = (loggedInUser_id) => {
 exports.updateFriendshipStatus = (newStatus, loggedInUserId, reciptientId) => {
     var q = `UPDATE friend_status
             SET status = $1
-            WHERE sender_id = $2
-            AND recipient_id = $3`
+            WHERE sender_id = $2 AND recipient_id = $3
+            OR sender_id = $3 AND recipient_id = $2 `
     var params = [newStatus, loggedInUserId, reciptientId]
     return db.query(q, params)
     .then(result => {
