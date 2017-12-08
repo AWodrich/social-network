@@ -309,16 +309,8 @@ app.post('/friend-status/:id/update', (req, res) => {
 app.get('/friends', (req, res) => {
     database.getFriends(req.session.user.id)
     .then(friends => {
-        console.log('friends', friends.length);
-        const filtered = []
-        for(var i = 0; i < friends.length; i++) {
-            if(friends[i].id !== req.session.user.id) {
-                // res.json({friends[i]})
-                filtered.push(friends[i])
-            }
-        }
-        // console.log('new array of filtered?', filtered);
-        res.json({filtered})
+        // console.log('friends', friends.length);
+        res.json({friends})
     })
 })
 

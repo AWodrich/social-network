@@ -184,13 +184,19 @@ exports.getFriends = (idUser) => {
     var q = `SELECT users.first, users.last, users.image, users.id, friend_status.status
             FROM friend_status
             JOIN users
-            ON friend_status.sender_id = users.id OR friend_status.recipient_id = users.id
-            WHERE friend_status.recipient_id = $1
-                OR friend_status.sender_id = $1`
-
+            ON (friend_status.status = 1 AND friend_status.recipient_id = $1 AND friend_status.sender_id = users.id)
+            OR (friend_status.status = 3 AND friend_status.recipient_id = $1 AND friend_status.sender_id = users.id)
+            OR (friend_status.status = 3 AND friend_status.sender_id = $1 AND friend_status.recipient_id = users.id)`
+    // var t = `SELECT users.first, users.last, users.image, users.id, friend_status.status
+    //         FROM users
+    //         LEFT JOIN friend_status
+    //         ON friend_status.sender_id = users.id OR friend_status.recipient_id = users.id
+    //         WHERE friend_status.recipient_id = $1
+    //         OR friend_status.sender_id = $1`
     var params = [idUser]
     return db.query(q, params)
     .then(usersList => {
+        console.log('what is users list after dabasase query', usersList);
         return usersList.rows
     })
 }

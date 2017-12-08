@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getFriendshipStatus } from './actions';
 import { FriendList } from './friendList'
 
 
@@ -12,7 +11,7 @@ export class Profile extends Component {
     }
 
     componentDidMount(){
-        this.props.dispatch(getFriendshipStatus())
+
     }
 
     render() {
