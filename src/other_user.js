@@ -10,6 +10,7 @@ export class OtherUser extends Component {
         // this.checkFriendStatus = this.checkFriendStatus.bind(this)
         // this.setFriendStatus = this.setFriendStatus.bind(this)
         this.updateFriendshipStatus = this.updateFriendshipStatus.bind(this);
+        // this.deleteFriendStatus = this.deleteFriendStatus.bind(this);
         // this.getButtonTxt = this.getButtonTxt.bind(this);
     }
     componentDidMount() {
@@ -18,17 +19,20 @@ export class OtherUser extends Component {
         this.props.dispatch(getFriendshipStatus(id))
     }
 
-    updateFriendshipStatus(){
+    updateFriendshipStatus() {
         let id = this.props.params.id
-        if(this.props.id == this.props.recipientId) {
-            if(this.props.params.id == this.props.senderId) {
-                this.props.statusFriendship = 3;
+        console.log('what is the status of friendship?', this.props.statusFriendship);
+        if (this.props.statusFriendship == 1) {
+            if (this.props.id == this.props.recipientId) {
+                this.props.dispatch(updateFriendshipStatus(id, 3))
+            } else {
+                this.props.dispatch(updateFriendshipStatus(id, 4))
             }
+        } else if (this.props.statusFriendship == 3) {
+            this.props.dispatch(updateFriendshipStatus(id, 4))
+        } else {
+            this.props.dispatch(updateFriendshipStatus(id, this.props.statusFriendship))
         }
-        // if(this.props.statusFriendship == 3) {
-        //     this.props.statusFriendship = 4
-        // }
-        this.props.dispatch(updateFriendshipStatus(id, this.props.statusFriendship))
     }
 
     // checkFriendStatus(){
@@ -60,17 +64,18 @@ export class OtherUser extends Component {
         }
     }
 
+    // deleteFriendStatus() {
+    //     if(this.props.statusFriendship == 3) {
+    //         this.props.statusFriendship = 4
+    //     }
+    //     this.props.dispatch(updateFriendshipStatus(id, this.props.statusFriendship))
+    // }
+
     render(){
         console.log('this.props.', this.props);
         if (!this.props.otherUserInfo) {
             return null
         }
-        // if(!this.props.senderId) {
-        //     senderId = 0;
-        // }
-        // if(!this.props.senderId || this.props.recipientId) {
-        //     return null
-        // }
 
         let { first, last, image, bios, id } = this.props.otherUserInfo;
         let status = this.props.statusFriendship;
@@ -91,7 +96,7 @@ export class OtherUser extends Component {
     }
 }
 
-// {this.props.statusFriendship == 3 && <button onClick={this.deleteFriendStatus}>End Friendship</button>}
+// {this.props.statusFriendship == 3 && <button onClick={this.deleteFriendStatus}>Yahoo End Friendship</button>}
 
 
 const mapStateToProps = function(state) {
