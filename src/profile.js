@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { getFriendshipStatus } from './actions';
+import { FriendList } from './friendList'
 
 
 export class Profile extends Component {
@@ -14,26 +15,9 @@ export class Profile extends Component {
         this.props.dispatch(getFriendshipStatus())
     }
 
-    renderButtonText(){
-        // let messageOnButton;
-        // let statusToUpdate;
-        // let otherButton;
-        // if(this.props.status == 1) {
-        //     otherButton = "Reject Friend Request";
-        //     messageOnButton = "Accept Friend Request";
-        // }
-        // if(this.props.status == 2) {
-        //     messageOnButton = "Terminate Friendship"
-        // }
-        // if (status is good) {
-        //     return (
-        //         <button onClick={this.deleteFriend}>Delete friend</button>
-        //     )
-        // }
-    }
-
     render() {
         console.log('this.props.dispatch', this.props);
+        let id = this.props.id
 
         console.log('props in profile component', this.props);
         return(
@@ -41,6 +25,7 @@ export class Profile extends Component {
                 <div className="wrapLogoH1">
                     <h1>Welcome, {this.props.first} {this.props.last}, to your Profile Page</h1>
                     <a href="/logout">Logout</a>
+                    <Link to="/friends">See friends</Link>
                 </div>
                 <div className="wrapFirstLastLinkAddBio">
                     <img className="profilePic2"src={this.props.imgUrl} />
@@ -50,7 +35,6 @@ export class Profile extends Component {
                     {!this.props.bio && <h4>No bio added</h4>}
                     {!this.props.bio && <Link className="linkToAddBio" to="/add-bio">Add Bio</Link>}
                     {this.props.status && <button>{messageOnButton}</button>}
-                    {this.renderButtonText()}
                 </div>
             </div>
         )

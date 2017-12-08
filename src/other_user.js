@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getOtherUserInfo, getFriendshipStatus, updateFriendshipStatus } from './actions';
 
-
 export class OtherUser extends Component {
     constructor(props) {
         super(props)
         this.state={}
-        // this.checkFriendStatus = this.checkFriendStatus.bind(this)
-        // this.setFriendStatus = this.setFriendStatus.bind(this)
+
         this.updateFriendshipStatus = this.updateFriendshipStatus.bind(this);
-        // this.deleteFriendStatus = this.deleteFriendStatus.bind(this);
-        // this.getButtonTxt = this.getButtonTxt.bind(this);
     }
     componentDidMount() {
         let id = this.props.params.id
@@ -35,12 +31,6 @@ export class OtherUser extends Component {
         }
     }
 
-    // checkFriendStatus(){
-    //     this.setState({
-    //         active: true
-    //     })
-    // }
-
     getButtonTxt(){
 
         let status = this.props.statusFriendship
@@ -63,13 +53,6 @@ export class OtherUser extends Component {
                 break;
         }
     }
-
-    // deleteFriendStatus() {
-    //     if(this.props.statusFriendship == 3) {
-    //         this.props.statusFriendship = 4
-    //     }
-    //     this.props.dispatch(updateFriendshipStatus(id, this.props.statusFriendship))
-    // }
 
     render(){
         console.log('this.props.', this.props);

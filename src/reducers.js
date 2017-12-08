@@ -1,4 +1,4 @@
-import { getUserInfos } from './actions';
+import { getUserInfos, getFriends } from './actions';
 
 
 
@@ -26,6 +26,14 @@ export default function(state = {}, action) {
             statusFriendship: action.statusFriendship.status
         })
     }
+    if(action.type == 'FRIEND_LIST') {
+        console.log('what is action in reducer for friend list?++++', action.friends);
+        state = Object.assign({}, state, {
+            friends: action.friends
+        })
+    }
+
+
 
     return state;
 }
