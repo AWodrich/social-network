@@ -306,7 +306,7 @@ app.post('/friend-status/:id/update', (req, res) => {
     }
 })
 
-app.get('/friends', (req, res) => {
+app.get('/user/:id/friends', (req, res) => {
     database.getFriends(req.session.user.id)
     .then(friends => {
         // console.log('friends', friends.length);

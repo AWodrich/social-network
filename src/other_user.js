@@ -79,8 +79,6 @@ export class OtherUser extends Component {
     }
 }
 
-// {this.props.statusFriendship == 3 && <button onClick={this.deleteFriendStatus}>Yahoo End Friendship</button>}
-
 
 const mapStateToProps = function(state) {
     return {

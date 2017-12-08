@@ -218,3 +218,10 @@ button :hover {
     left: 300px;
     top: 250px;
 }
+
+/* Friends List */
+
+.imgFriendsList {
+    width: 100px;
+    height: 100px;
+}

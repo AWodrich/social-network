@@ -43,14 +43,14 @@ export function updateFriendshipStatus(id, status) {
     })
 }
 
-export function getFriends() {
+export function getFriends(id) {
     console.log('inside get friend lists action creator');
-    return axios.get('/friends')
+    return axios.get('/user/' + id + '/friends')
     .then(friends => {
         console.log('getting friends on client side', friends.data);
         return {
             type: 'FRIEND_LIST',
-            friends: friends.data.filtered
+            friends: friends.data.friends
         }
     })
 }
