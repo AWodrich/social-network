@@ -12,6 +12,9 @@ import reduxPromise from 'redux-promise';
 import reducer from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import FriendList from './friendList';
+import * as io from 'socket.io-client';
+import Online from './online'
+
 
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(reduxPromise)));
@@ -40,6 +43,7 @@ const loggedInRouter = (
                 <Route path="/friend-status/:id" component={FriendButton} />
                 <Route path="/user/:id" component={OtherUser} />
                 <Route path="/friends" component={FriendList} />
+                <Route path="/online" component={Online}/>
                 <IndexRoute component={Profile} />
                 <Redirect from="*" to="/" />
             </Route>

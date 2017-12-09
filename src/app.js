@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import { checkFriendStatus, getUserInfos } from './actions';
 import { connect } from 'react-redux';
 import Profile from './profile';
+import {getSocket} from './socket';
+
 
 
 
@@ -21,6 +23,7 @@ export class App extends Component {
     }
     componentDidMount() {
         this.props.dispatch(getUserInfos())
+        getSocket();
     }
     showUploader() {
         this.setState({

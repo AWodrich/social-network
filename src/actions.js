@@ -69,3 +69,18 @@ export function acceptFriendship(friendId, userId) {
 
     })
 }
+
+export function usersOnline(users){
+  console.log('onlineData', users);
+  return {type: 'USERS_ONLINE', users};
+}
+
+export function userJoined(id){
+  console.log('joinedData', id);
+  return {type: 'NEW_USER', id};
+}
+
+export function userLeft(id){
+  console.log('leftData', id);
+  return {type: 'USER-LEFT', id};
+}
