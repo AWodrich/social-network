@@ -55,7 +55,17 @@ export function getFriends(id) {
     })
 }
 
-// export function getPendingFriends() {
-//     console.log('inside pending friends action');
-//     return axios.get('/friends')
-// }
+export function endFriendship(friendId, userId) {
+    return axios.post('/friend-status/'+ friendId + '/update', {status:4, friendId:friendId})
+    .then(({data}) => {
+        location.replace('/friends')
+    })
+}
+
+export function acceptFriendship(friendId, userId) {
+    return axios.post('/friend-status/'+ friendId + '/update', {status:3, friendId:friendId})
+    .then(({data}) => {
+        location.replace('/friends')
+
+    })
+}

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getFriends } from './actions';
 import { Link } from 'react-router';
+import { endFriendship, acceptFriendship } from './actions';
 
 
 export class FriendList extends Component {
@@ -16,96 +17,94 @@ export class FriendList extends Component {
         let id = this.props.params.id
     }
 
-    updateFriendshipStatus() {
-        let id = this.props.id
-        if (this.props.friends.status == 1 || this.props.pending.status == 1) {
-                this.props.dispatch(updateFriendshipStatus(id, 3))
-            } else {
-                this.props.dispatch(updateFriendshipStatus(id, 4))
-            }
-        if (this.props.friends.status == 3 || this.props.pending.status == 3) {
-            this.props.dispatch(updateFriendshipStatus(id, 4))
-        }
+    endFriendship(friendId) {
+        let userId = this.props.id;
+        this.props.dispatch(endFriendship(friendId, userId, 4))
     }
 
-    getButtonTxt(status){
-
-        console.log('in button', status);
-        // let status = this.props.friends.status || this.props.pending.status
-
-        switch(status) {
-            case 0:
-                return 'Add Friend';
-                break;
-            case 1:
-                if(this.props.id == this.props.recipientId) {
-                    if(this.props.params.id == this.props.senderId) {
-                        return 'Accept Friend Request';
-                        break;
-                    }
-                }
-                return 'Cancel Request';
-                break;
-            case 3:
-                return 'End Friendship';
-                break;
-        }
+    acceptFriendship(friendId) {
+        let userId = this.props.id;
+        this.props.dispatch(acceptFriendship(friendId, userId, 3))
     }
 
     render() {
-        if(!this.props.friends) {
-            return null
+        let friends = this.props.friends;
+        let pending = this.props.pending;
+        if(!friends) {
+            return (
+                <div>
+                    <h2>No friends</h2>
+                </div>
+            )
         }
-        if(!this.props.pending) {
-            return null
-        }
-
-        var accepted = [];
-        for (var i = 0; i < this.props.friends.length; i++) {
-            var first = this.props.friends[i].first
-            var last = this.props.friends[i].last
-            var img = 'https://s3.amazonaws.com/anjaspiced/'+ this.props.friends[i].image
-            var id = this.props.friends[i].id
-            var status = this.props.friends[i].status
-            accepted.push(<li key={i}>{first} {last} <Link to={`/user/${id}`}><img className="imgFriendsList" src={img} /></Link><button onClick={this.updateFriendshipStatus}>{this.getButtonTxt(status)}</button></li>);
-        }
-
-        var pending = [];
-        for(var j = 0; j < this.props.pending.length; j ++) {
-            if(!this.props.pending[j].image) {
-                var img = '../defaultProfileImg.jpg'
-            } else {
-                var img = 'https://s3.amazonaws.com/anjaspiced/'+ this.props.pending[j].image
-            }
-            var first = this.props.pending[j].first
-            var last = this.props.pending[j].last
-            var id = this.props.pending[j].id
-            var status = this.props.pending[j].status
-            pending.push(<li key={j}>{first} {last} <Link to={`/user/${id}`}><img className="imgFriendsList" src={img} /></Link><button onClick={this.updateFriendshipStatus}>{this.getButtonTxt(status)}</button></li>);
+        if(!pending) {
+            return(
+                <div>
+                    <h2>No pending friend requests</h2>
+                </div>
+            )
         }
 
-        console.log('state', this.state);
-        console.log('props', this.props);
+
+
+        const accepted = [];
+        const friendList = friends.map(friend => {
+
+            accepted.push(
+                <div>
+                <p>Friends</p>
+                <div key={friend.id}>
+                    <h2>{friend.first} {friend.last}</h2>
+                    <Link to={`/user/${friend.id}`}>
+                    <img className="imgFriendsList" src={'https://s3.amazonaws.com/anjaspiced/'+ friend.image} />
+                    </Link>
+                    <button onClick={() => this.endFriendship(friend.id)}>End Friendship</button>
+                </div>
+                </div>
+            )});
+
+
+        const pendingList = [];
+        const pendingRequests =  pending.map(pending => {
+
+            pendingList.push(
+                    <div>
+                    <p>Pending Requests</p>
+                    <div key={pending.id}>
+                        <h2>{pending.first} {pending.last}</h2>
+                        <Link to={`/user/${pending.id}`}>
+                        <img className="imgFriendsList" src={'https://s3.amazonaws.com/anjaspiced/'+ pending.image} />
+                        </Link>
+                        <button onClick={() => this.acceptFriendship(pending.id)}>Accept Friendship</button>
+                    </div>
+                    </div>
+            )
+        })
 
         return(
             <div>
-                <h1>This is the friends list</h1>
-                <h2>accepted friends:  {accepted}</h2>
-                <h2>pending friends: {pending}</h2>
+                <div>
+
+                    <ul>{accepted}</ul>
+                </div>
+                <div>
+
+                    <ul>{pendingList}</ul>
+                </div>
             </div>
         )
     }
 }
 
 const mapStateToProps = function(state) {
-    console.log('what is state in mapStateToProps for friend list', state);
     return {
+        statusFriendship: state.statusFriendship,
         friends: state.friends && state.friends.filter(user => {
             return user.status == 3;
         }),
         pending: state.friends && state.friends.filter(user => {
             return user.status == 1;
-        })
+        }),
     }
 }
 

@@ -287,6 +287,7 @@ app.get('/friend-status/:id', (req, res) => {
 
 app.post('/friend-status/:id/update', (req, res) => {
     console.log('req.body', req.body);
+    console.log('req.params', req.params);
     var newStatus;
     if(req.body.status == 0) {
         database.insertFriendStatus(1, req.session.user.id, req.params.id)
