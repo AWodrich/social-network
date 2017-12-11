@@ -31,15 +31,18 @@ export default function(state = {}, action) {
         })
     }
     if (action.type == 'USERS_ONLINE') {
+        console.log('action', action, 'action.user', action.users);
         state = Object.assign({}, state, {usersOnline: action.users});
     }
 
     if (action.type == 'NEW_USER') {
+        console.log('solving issue?', action.id);
         state = Object.assign({}, state, {
-            usersOnline: state.usersOnline.concat(action.id)
+            usersOnline: state.usersOnline.concat([action.id])
         })
     }
-    if (action.type == 'USER-LEFT') {
+    if (action.type == 'USER_LEFT') {
+        console.log('user left', action);
         state = Object.assign({}, state, {
             usersOnline: state.usersOnline.filter(usersOnline => usersOnline.id !== action.id.userLeft),
         })

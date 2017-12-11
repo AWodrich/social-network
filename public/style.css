@@ -236,3 +236,10 @@ button :hover {
     width: 100px;
     height: 100px;
 }
+
+/* Online Users */
+
+.onlineImg {
+    width: 100px;
+    height: auto;
+}

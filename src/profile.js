@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { FriendList } from './friendList'
+import { FriendList } from './friendList';
+
 
 
 export class Profile extends Component {
@@ -25,6 +26,7 @@ export class Profile extends Component {
                     <h1>Welcome, {this.props.first} {this.props.last}, to your Profile Page</h1>
                     <a href="/logout">Logout</a>
                     <Link to="/friends">See friends</Link>
+                    <Link to="/online">Who is online</Link>
                 </div>
                 <div className="wrapFirstLastLinkAddBio">
                     <img className="profilePic2"src={this.props.imgUrl} />

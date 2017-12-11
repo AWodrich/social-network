@@ -23,25 +23,30 @@ class Online extends React.Component {
       </div>);
     }
 
+    const list = [];
     const onlineList = whosOnline.map((user) => {
+        list.push(
         <div key={user.id}>
+            <p>This should be user</p>
             <Link to={`/user/${user.id}`}>{user.first} {user.last}</Link>
-            <img src={user.image} alt=""/>
+            <img className="onlineImg" src={user.image} alt=""/>
         </div>
-        });
+        )
+    })
+        console.log('inside list online', list);
 
 
     return (
         <div className="online">
             <h1>Whos Online?</h1>
 
-            <div>{onlineList}</div>
+            <div>{list}</div>
 
         </div>
     )
   }
 }
 
-const mapStateToProps = (state) => ({usersOnline: state.usersOnline});
+const mapStateToProps = (state) => (console.log(state),{usersOnline: state.usersOnline});
 
 export default connect(mapStateToProps)(Online);

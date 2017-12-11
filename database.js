@@ -187,16 +187,49 @@ exports.getFriends = (idUser) => {
             ON (friend_status.status = 1 AND friend_status.recipient_id = $1 AND friend_status.sender_id = users.id)
             OR (friend_status.status = 3 AND friend_status.recipient_id = $1 AND friend_status.sender_id = users.id)
             OR (friend_status.status = 3 AND friend_status.sender_id = $1 AND friend_status.recipient_id = users.id)`
-    // var t = `SELECT users.first, users.last, users.image, users.id, friend_status.status
-    //         FROM users
-    //         LEFT JOIN friend_status
-    //         ON friend_status.sender_id = users.id OR friend_status.recipient_id = users.id
-    //         WHERE friend_status.recipient_id = $1
-    //         OR friend_status.sender_id = $1`
     var params = [idUser]
     return db.query(q, params)
     .then(usersList => {
         console.log('what is users list after dabasase query', usersList);
         return usersList.rows
+    })
+}
+
+// 13. Online User - getting user by id
+
+exports.getUserById = (idUser) => {
+    console.log('in database', typeof idUser);
+    var q = `SELECT * FROM users WHERE id=$1`
+    var params = [idUser]
+    return db.query(q, params)
+    .then(users => {
+        console.log('users', users);
+        if(!users.rows[0]) {
+            return 0
+        } else if(users.rows[0].image) {
+            users.rows.forEach(row => {
+                row.image = config.s3Url + row.image;
+            })
+            return users.rows[0];
+        } else {
+            return users.rows[0];
+        }
+    })
+}
+
+// 14. Online Users - get multiple users by Id
+
+module.exports.getUsersByIds = function (arrayOfIds) {
+      return db.query(`SELECT * FROM users WHERE id = ANY($1)`, [arrayOfIds]).then(function(results) {
+        if (!results) {
+          return 0
+        } else {
+          results.rows.forEach(function(row) {
+
+              row.profilepic = config.s3Url + row.profilepic;
+
+          })
+          return results.rows;
+        }
     })
 }

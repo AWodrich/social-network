@@ -13,11 +13,12 @@ import reducer from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import FriendList from './friendList';
 import * as io from 'socket.io-client';
-import Online from './online'
+import Online from './online';
+import Chat from './chat';
 
 
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(reduxPromise)));
+export const store = createStore(reducer, composeWithDevTools(applyMiddleware(reduxPromise)));
 let router;
 
 const notLoggedInRouter = (
@@ -44,6 +45,7 @@ const loggedInRouter = (
                 <Route path="/user/:id" component={OtherUser} />
                 <Route path="/friends" component={FriendList} />
                 <Route path="/online" component={Online}/>
+                <Route path="/chat" component={Chat} />
                 <IndexRoute component={Profile} />
                 <Redirect from="*" to="/" />
             </Route>

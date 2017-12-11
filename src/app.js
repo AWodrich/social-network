@@ -22,8 +22,8 @@ export class App extends Component {
         this.checkForRequests = this.checkForRequests.bind(this)
     }
     componentDidMount() {
-        this.props.dispatch(getUserInfos())
         getSocket();
+        this.props.dispatch(getUserInfos())
     }
     showUploader() {
         this.setState({

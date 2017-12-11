@@ -17,15 +17,11 @@ const pw = require('./password');
 const database = require('./database.js');
 const s3 = require('./s3');
 
+const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
 
-// const io = module.exports.io = require('socket.io')(app)
-// const getSocket = require('./src/socket')
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-// connection to the server
-
-// io.connection('connection', getSocket)
 
 // Storing images
 const diskStorage = multer.diskStorage({
@@ -324,6 +320,94 @@ app.get('/user/:id/friends', (req, res) => {
     })
 })
 
+// Users Online
+
+let users = [];
+
+io.on('connection', socket => {
+    console.log('Connected: %s users connected', users.length);
+
+    // DISCONNECT, tells me how many users are still online, when a user has desconnected
+    socket.on('disconnect', data => {
+        // connections.splice(connections.indexOf(socket),1);
+        console.log('Disconnected: %s sockets connected', users.length)
+
+        let movinUserID;
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].socketId == socket.id) {
+                movinUserID = users[i].userId;
+                console.log('disconnected matched');
+            }
+        }
+
+        users = users.filter(function(obj) {
+            return obj.socketId !== socket.id;
+        });
+
+        let userIdCount = 0;
+        console.log('before the loop, useridcountis', userIdCount);
+        for (let i = 0; i < users.length; i++) {
+            if (movinUserID == users[i].userId) {
+                userIdCount++;
+            }
+        }
+        console.log('is there multiple disconnects?', userIdCount);
+        if (userIdCount < 2) {
+            // console.log('user took their connects and left, remainingUsers:', onlineUsers);
+            io.sockets.emit('userLeft', {userLeft: movinUserID});
+        } else {
+            console.log('userStill here, had multiple connections');
+        }
+    });
+
+});
+
+
+app.get('/connected/:socketId', function(req, res, next) {
+
+    if (!req.session.user) {
+        return next();
+    }
+    users.push({userId: req.session.user.id, socketId: req.params.socketId});
+    const ids = users.map(id => id.userId);
+    database.getUsersByIds(ids)
+    .then(results => {
+        io.sockets.sockets[req.params.socketId].emit('usersOnline', results);
+    })
+    .catch(err => {
+        console.log(err);
+    })
+
+    let movinUserID;
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].socketId == req.params.socketId) {
+            movinUserID = users[i].userId;
+            console.log('connected matched');
+        }
+    }
+    let userIdCount = 0;
+    console.log('before the loop, useridcountis', userIdCount);
+    for (let i = 0; i < users.length; i++) {
+        if (movinUserID == users[i].userId) {
+            userIdCount++;
+        }
+    }
+    console.log('is there multiple connects?', userIdCount);
+    if (userIdCount < 2) {
+        console.log('movinUserId', 'typeof', typeof movinUserID);
+        console.log('thats a new user, allUsers: ', users);
+        database.getUserById(movinUserID).then(results => {
+            console.log('about to emit user joined', results);
+            io.sockets.emit('userJoined', results);
+        });
+
+    } else {
+        console.log('user already connected');
+    }
+});
+
+
+
 
 
 // 1. Fallback route, the fail safe
@@ -343,6 +427,6 @@ app.get('*', function(req, res){
 
 
 //=================== setting up server ========================================//
-app.listen(8080, function() {
+server.listen(8080, function() {
     console.log("I'm listening.")
 });

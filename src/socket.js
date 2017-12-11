@@ -7,12 +7,18 @@ import axios from './axios';
 import { userJoined, userLeft, usersOnline } from './actions';
 import { store } from './start'
 
+
+export { getSocket };
+
+const connections = []
+
 let socket;
 
 function getSocket() {
   if (!socket) {
     socket = io.connect();
     socket.on('connect', () => {
+        console.log('in here connect socket');
       axios.get('/connected/' + socket.id)
     });
 
@@ -27,11 +33,24 @@ function getSocket() {
   })
 
   socket.on('usersOnline', data => {
-    console.log('all online users');
+    console.log('all online users!!!!!!', data);
     store.dispatch(usersOnline(data))
   })
-}
+
+
 return socket;
+    }
 }
 
-export { getSocket } ;
+
+
+
+// online users
+// <div className="container">
+//     <div className="row">
+//         <div className="onlineUsers">
+//             <h3>Online Users</h3>
+//             <ul className="onlineUsers"></ul>
+//         </div>
+//     </div>
+// </div>

@@ -71,7 +71,9 @@ export function acceptFriendship(friendId, userId) {
 }
 
 export function usersOnline(users){
+    console.log('in actions usersOnline');
   console.log('onlineData', users);
+  // return axios.get('/connected/')
   return {type: 'USERS_ONLINE', users};
 }
 
@@ -82,5 +84,5 @@ export function userJoined(id){
 
 export function userLeft(id){
   console.log('leftData', id);
-  return {type: 'USER-LEFT', id};
+  return {type: 'USER_LEFT', id};
 }
