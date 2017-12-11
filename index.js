@@ -16,7 +16,16 @@ const path = require('path');
 const pw = require('./password');
 const database = require('./database.js');
 const s3 = require('./s3');
+
+
+// const io = module.exports.io = require('socket.io')(app)
+// const getSocket = require('./src/socket')
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+// connection to the server
+
+// io.connection('connection', getSocket)
 
 // Storing images
 const diskStorage = multer.diskStorage({

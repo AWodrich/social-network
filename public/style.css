@@ -27,8 +27,8 @@
 
 body {
     display: grid;
-    grid-template-columns: 100px auto 100px;
-    grid-template-rows: 100px 25% 100px;
+    grid-template-columns: 200px 71% 200px;
+    grid-template-rows: 100px 32% 20px;
     border: 1px solid blue;
     width: 100%;
     height: 300vh;
@@ -131,26 +131,41 @@ button :hover {
     top: 20px;
     left: 1280px;
     width: auto;
-    height: 80px;;
+    height: 80px;
+    border-radius: 50px;
 }
+
+.profileImg:hover {
+    height: 100px;
+}
+
 
 .profilePic2 {
     position: absolute;
-    width: 200px;
+    width: 100px;
     height: auto;
+    left: 20px;
+    top:140px;
+    border-radius: 50px;
 }
 
 .firstLast {
-    position: relative;
+    position: absolute;
     text-decoration: underline;
-    top: 60px;
-    left: 25%;
+    top: 90px;
+    left: 20px;
 }
 
 .linkToAddBio {
-    position: relative;
-    top: 80px;
-    left: 25%;
+    position: absolute;
+    top: 280px;
+    left: 20px;
+}
+
+.noBioAdded {
+    position: absolute;
+    left: 20px;
+    top: 290px;
 }
 
 .wrapFirstLastLinkAddBio {
@@ -186,11 +201,6 @@ button :hover {
     left: 35%;
 }
 
-.wrapFirstLastLinkAddBio > h4 {
-    position: relative;
-    top: 60px;
-    left: 25%;
-}
 
 .addingBioWrapper {
     position: relative;
@@ -217,6 +227,7 @@ button :hover {
     height: 200px;
     left: 300px;
     top: 250px;
+
 }
 
 /* Friends List */

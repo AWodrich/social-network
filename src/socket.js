@@ -34,4 +34,4 @@ function getSocket() {
 return socket;
 }
 
-export {getSocket} ;
+export { getSocket } ;

@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {} from './actions';
 import {getSocket} from './socket';
 
-const mapStateToProps = (state) => ({usersOnline: state.usersOnline});
 
 class Online extends React.Component {
   constructor(props) {
@@ -42,3 +41,7 @@ class Online extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({usersOnline: state.usersOnline});
+
+export default connect(mapStateToProps)(Online);
