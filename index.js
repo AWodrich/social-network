@@ -291,8 +291,6 @@ app.get('/friend-status/:id', (req, res) => {
 // Update Friendship status
 
 app.post('/friend-status/:id/update', (req, res) => {
-    console.log('req.body', req.body);
-    console.log('req.params', req.params);
     var newStatus;
     if(req.body.status == 0) {
         database.insertFriendStatus(1, req.session.user.id, req.params.id)
@@ -315,7 +313,6 @@ app.post('/friend-status/:id/update', (req, res) => {
 app.get('/user/:id/friends', (req, res) => {
     database.getFriends(req.session.user.id)
     .then(friends => {
-        // console.log('friends', friends.length);
         res.json({friends})
     })
 })
@@ -329,9 +326,6 @@ io.on('connection', socket => {
 
     // DISCONNECT, tells me how many users are still online, when a user has desconnected
     socket.on('disconnect', data => {
-        // connections.splice(connections.indexOf(socket),1);
-        console.log('Disconnected: %s sockets connected', users.length)
-
         let movinUserID;
         for (let i = 0; i < users.length; i++) {
             if (users[i].socketId == socket.id) {
@@ -345,7 +339,6 @@ io.on('connection', socket => {
         });
 
         let userIdCount = 0;
-        console.log('before the loop, useridcountis', userIdCount);
         for (let i = 0; i < users.length; i++) {
             if (movinUserID == users[i].userId) {
                 userIdCount++;
@@ -353,7 +346,6 @@ io.on('connection', socket => {
         }
         console.log('is there multiple disconnects?', userIdCount);
         if (userIdCount < 2) {
-            // console.log('user took their connects and left, remainingUsers:', onlineUsers);
             io.sockets.emit('userLeft', {userLeft: movinUserID});
         } else {
             console.log('userStill here, had multiple connections');
@@ -386,7 +378,6 @@ app.get('/connected/:socketId', function(req, res, next) {
         }
     }
     let userIdCount = 0;
-    console.log('before the loop, useridcountis', userIdCount);
     for (let i = 0; i < users.length; i++) {
         if (movinUserID == users[i].userId) {
             userIdCount++;
@@ -394,10 +385,7 @@ app.get('/connected/:socketId', function(req, res, next) {
     }
     console.log('is there multiple connects?', userIdCount);
     if (userIdCount < 2) {
-        console.log('movinUserId', 'typeof', typeof movinUserID);
-        console.log('thats a new user, allUsers: ', users);
         database.getUserById(movinUserID).then(results => {
-            console.log('about to emit user joined', results);
             io.sockets.emit('userJoined', results);
         });
 
@@ -406,8 +394,30 @@ app.get('/connected/:socketId', function(req, res, next) {
     }
 });
 
+// Chat
 
+const messageArray = [];
 
+app.post('/chat.json', (req, res) => {
+    database.getUserById(req.session.user.id)
+    .then(results => {
+        let fullMessage = {
+            first: results.first,
+            last: results.last,
+            profilepic: results.image,
+            message: req.body.messageContents,
+            id: req.session.user.id
+        }
+        messageArray.push(fullMessage);
+        io.sockets.emit('newMessage', fullMessage);
+    })
+    .catch(err => console.log(err))
+});
+
+app.get('/chat.json', (req, res) => {
+  console.log('get array++++++++++++++++++++++', messageArray);
+  res.json(messageArray);
+});
 
 
 // 1. Fallback route, the fail safe

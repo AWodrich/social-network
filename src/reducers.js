@@ -31,20 +31,28 @@ export default function(state = {}, action) {
         })
     }
     if (action.type == 'USERS_ONLINE') {
-        console.log('action', action, 'action.user', action.users);
         state = Object.assign({}, state, {usersOnline: action.users});
     }
 
     if (action.type == 'NEW_USER') {
-        console.log('solving issue?', action.id);
         state = Object.assign({}, state, {
             usersOnline: state.usersOnline.concat([action.id])
         })
     }
     if (action.type == 'USER_LEFT') {
-        console.log('user left', action);
         state = Object.assign({}, state, {
             usersOnline: state.usersOnline.filter(usersOnline => usersOnline.id !== action.id.userLeft),
+        })
+    }
+
+    if (action.type == 'ALL_MESSAGES') {
+        state = Object.assign({}, state, {messages: action.messages});
+        console.log('reducer message for all', action.messages);
+    }
+
+    if (action.type == 'NEW_MESSAGE') {
+        state = Object.assign({}, state, {
+            messages: state.messages.concat(action.message)
         })
     }
 

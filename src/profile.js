@@ -27,6 +27,7 @@ export class Profile extends Component {
                     <a href="/logout">Logout</a>
                     <Link to="/friends">See friends</Link>
                     <Link to="/online">Who is online</Link>
+                    <div><Link to="/chat">Chat</Link></div>
                 </div>
                 <div className="wrapFirstLastLinkAddBio">
                     <img className="profilePic2"src={this.props.imgUrl} />

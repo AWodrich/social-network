@@ -24,7 +24,7 @@ class Online extends React.Component {
     }
 
     const list = [];
-    const onlineList = whosOnline.map((user) => {
+    const onlineList = whosOnline.map(user => {
         list.push(
         <div key={user.id}>
             <p>This should be user</p>

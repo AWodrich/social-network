@@ -35,7 +35,6 @@ export function getFriendshipStatus(id) {
 export function updateFriendshipStatus(id, status) {
     return axios.post('/friend-status/'+ id + '/update', {status:status})
     .then(({data}) => {
-        console.log('after updating friend request', data);
         return {
             type: 'UPDATE_FRIEND_STATUS',
             statusFriendship: data
@@ -44,10 +43,8 @@ export function updateFriendshipStatus(id, status) {
 }
 
 export function getFriends(id) {
-    console.log('inside get friend lists action creator');
     return axios.get('/user/' + id + '/friends')
     .then(friends => {
-        console.log('getting friends on client side', friends.data);
         return {
             type: 'FRIEND_LIST',
             friends: friends.data.friends
@@ -66,23 +63,36 @@ export function acceptFriendship(friendId, userId) {
     return axios.post('/friend-status/'+ friendId + '/update', {status:3, friendId:friendId})
     .then(({data}) => {
         location.replace('/friends')
-
     })
 }
 
 export function usersOnline(users){
-    console.log('in actions usersOnline');
-  console.log('onlineData', users);
-  // return axios.get('/connected/')
-  return {type: 'USERS_ONLINE', users};
+    return {type: 'USERS_ONLINE', users};
 }
 
 export function userJoined(id){
-  console.log('joinedData', id);
-  return {type: 'NEW_USER', id};
+    return {type: 'NEW_USER', id};
 }
 
 export function userLeft(id){
-  console.log('leftData', id);
-  return {type: 'USER_LEFT', id};
+    return {type: 'USER_LEFT', id};
+}
+
+export function postMessage(message) {
+    console.log('in post message', message);
+    let data = {
+        messageContents: message
+    }
+    return axios.post('/chat.json/', data)
+    .then(results => {
+        return {type: 'NEW_MESSAGE', message};
+    })
+}
+
+export function getMessages(messages) {
+    return axios.get('/chat.json/')
+    .then(data => {
+        console.log('here should be the message data========', data);
+        return {type: 'ALL_MESSAGES', messages: data.data};
+    });
 }

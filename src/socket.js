@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {} from './actions';
 import * as io from 'socket.io-client';
 import axios from './axios';
-import { userJoined, userLeft, usersOnline } from './actions';
+import { userJoined, userLeft, usersOnline, getMessages } from './actions';
 import { store } from './start'
 
 
@@ -15,30 +15,30 @@ const connections = []
 let socket;
 
 function getSocket() {
-  if (!socket) {
-    socket = io.connect();
-    socket.on('connect', () => {
-        console.log('in here connect socket');
-      axios.get('/connected/' + socket.id)
-    });
+    if (!socket) {
+        socket = io.connect();
+        socket.on('connect', () => {
+            axios.get('/connected/' + socket.id)
+        });
 
-  socket.on('userJoined', data => {
-    console.log('user joined');
-    store.dispatch(userJoined(data))
-  })
+        socket.on('userJoined', data => {
+            store.dispatch(userJoined(data))
+        })
 
-  socket.on('userLeft', data => {
-    console.log('user left');
-    store.dispatch(userLeft(data))
-  })
+        socket.on('userLeft', data => {
+            store.dispatch(userLeft(data))
+        })
 
-  socket.on('usersOnline', data => {
-    console.log('all online users!!!!!!', data);
-    store.dispatch(usersOnline(data))
-  })
+        socket.on('usersOnline', data => {
+            store.dispatch(usersOnline(data))
+        })
 
+        socket.on('newMessage', messageObj => {
+            console.log('new message', messageObj);
+            store.dispatch(getMessages(messageObj))
+        })
 
-return socket;
+        return socket;
     }
 }
 
