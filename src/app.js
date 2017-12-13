@@ -76,8 +76,7 @@ export class App extends Component {
         }
 
         return (
-            <div>
-            
+            <div className="childrenWrapper">
                 {children}
                 {this.state.uploaderIsVisible && <UploadImage />}
                 <ProfilePic showUploader={this.showUploader} imgUrl={imageUrl} />

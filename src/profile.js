@@ -20,7 +20,6 @@ export class Profile extends Component {
 
         return(
             <div className="profileWrapper">
-            <FetchNews />
                 <nav className="header">
                     <h1>Welcome, {this.props.first} {this.props.last}, to your Profile Page</h1>
                     <a href="/logout">Logout</a>
@@ -28,7 +27,7 @@ export class Profile extends Component {
                     <Link to="/online">Who is online</Link>
                     <div><Link to="/chat">Chat</Link></div>
                 </nav>
-                <div className="wrapFirstLastLinkAddBio">
+                <div className="aside-1">
                     <img className="profilePic2"src={this.props.imgUrl} />
                     <h3 className="firstLast">{this.props.first} {this.props.last}</h3>
                     {this.props.bio && <h4 className="noBioAdded">{this.props.bio}</h4>}
@@ -37,6 +36,9 @@ export class Profile extends Component {
                     {!this.props.bio && <Link className="linkToAddBio" to="/add-bio">Add Bio</Link>}
                     {this.props.status && <button>{messageOnButton}</button>}
                 </div>
+                <FetchNews />
+                <div className="aside-2" />
+
             </div>
         )
     }
