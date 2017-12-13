@@ -20,6 +20,10 @@ const s3 = require('./s3');
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 
+
+// const url = require('url');
+
+
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -418,6 +422,24 @@ app.get('/chat.json', (req, res) => {
   console.log('get array++++++++++++++++++++++', messageArray);
   res.json(messageArray);
 });
+
+
+app.get('/news', (req, res) => {
+
+        // console.log('what is response?', resp, url);
+        // let data = '';
+        // res.on('data', chunk => {
+        //     data += chunk;
+        //     // console.log('data', data);
+        // })
+        // res.on('end', () => {
+        //     console.log(JSON.parse(data).explanation);
+        // })
+        // res.on('error', err => {
+        //     console.log("Error:" + err.message);
+        // })
+})
+
 
 
 // 1. Fallback route, the fail safe

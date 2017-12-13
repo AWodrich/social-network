@@ -1,4 +1,4 @@
-import { getUserInfos, getFriends } from './actions';
+import { getUserInfos, getFriends, getNews } from './actions';
 
 
 
@@ -35,9 +35,11 @@ export default function(state = {}, action) {
     }
 
     if (action.type == 'NEW_USER') {
-        state = Object.assign({}, state, {
-            usersOnline: state.usersOnline.concat([action.id])
-        })
+
+            state = Object.assign({}, state, {
+                usersOnline: state.usersOnline && state.usersOnline.concat([action.id])
+            })
+
     }
     if (action.type == 'USER_LEFT') {
         state = Object.assign({}, state, {
@@ -47,12 +49,18 @@ export default function(state = {}, action) {
 
     if (action.type == 'ALL_MESSAGES') {
         state = Object.assign({}, state, {messages: action.messages});
-        console.log('reducer message for all', action.messages);
     }
 
     if (action.type == 'NEW_MESSAGE') {
         state = Object.assign({}, state, {
             messages: state.messages.concat(action.message)
+        })
+    }
+
+    if (action.type == 'FETCH_NEWS') {
+        console.log('action', action.news);
+        state = Object.assign({}, state, {
+            news: action.news
         })
     }
 

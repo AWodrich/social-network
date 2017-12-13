@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { FriendList } from './friendList';
+import FetchNews from './fetchNews';
 
 
 
@@ -12,23 +13,21 @@ export class Profile extends Component {
     }
 
     componentDidMount(){
-
     }
 
     render() {
-        console.log('this.props.dispatch', this.props);
         let id = this.props.id
 
-        console.log('props in profile component', this.props);
         return(
-            <div>
-                <div className="wrapLogoH1">
+            <div className="profileWrapper">
+            <FetchNews />
+                <nav className="header">
                     <h1>Welcome, {this.props.first} {this.props.last}, to your Profile Page</h1>
                     <a href="/logout">Logout</a>
                     <Link to="/friends">See friends</Link>
                     <Link to="/online">Who is online</Link>
                     <div><Link to="/chat">Chat</Link></div>
-                </div>
+                </nav>
                 <div className="wrapFirstLastLinkAddBio">
                     <img className="profilePic2"src={this.props.imgUrl} />
                     <h3 className="firstLast">{this.props.first} {this.props.last}</h3>

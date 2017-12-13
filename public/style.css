@@ -26,41 +26,25 @@
 
 
 body {
-    display: grid;
-    grid-template-columns: 200px 71% 200px;
-    grid-template-rows: 100px 32% 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     border: 1px solid blue;
     width: 100%;
     height: 300vh;
     overflow: hidden;
 }
 
-header {
-    background-color: green;
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 1;
-    grid-row-end: 1;
-}
-
-footer {
-    background-color: green;
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
 main {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
     display: flex;
-    justify-content: center;
     flex-direction: row;
-    border: 1px solid yellow;
+    width: 100%;
+    border: 1px solid red;
 }
+
+
+
+
 
 
 /* Registration Page */
@@ -114,10 +98,32 @@ button :hover {
 
 /* After Registration / Profile Page */
 
+
+.profileWrapper {
+    display: flex;
+    /*flex-direction: row;*/
+    /*justify-content: space-around;*/
+    width: 100%;
+    border-color: blue;
+}
+
+.header {
+    /*display: flex;
+    flex-direction: row;
+    justify-content: space-around;*/
+    border: 2px solid green;
+    /*position: relative;*/
+    height: 200px;
+
+    /*width: 1450px;*/
+    /*top:-350px;*/
+
+}
+
 .logoImg {
     width: 200px;
     height: 200px;
-    position: absolute;
+    /*position: absolute;*/
     left: 1%;
     border-radius: 100px;
     top: 0px;
@@ -127,7 +133,7 @@ button :hover {
 
 /* After Login / Profile Page */
 .profileImg {
-    position: absolute;
+    /*position: absolute;*/
     top: 20px;
     left: 1280px;
     width: auto;
@@ -141,7 +147,7 @@ button :hover {
 
 
 .profilePic2 {
-    position: absolute;
+    /*position: absolute;*/
     width: 100px;
     height: auto;
     left: 20px;
@@ -150,26 +156,29 @@ button :hover {
 }
 
 .firstLast {
-    position: absolute;
+    /*position: absolute;*/
     text-decoration: underline;
     top: 90px;
     left: 20px;
 }
 
 .linkToAddBio {
-    position: absolute;
+    /*position: absolute;*/
     top: 280px;
     left: 20px;
 }
 
 .noBioAdded {
-    position: absolute;
+    /*position: absolute;*/
     left: 20px;
     top: 290px;
 }
 
 .wrapFirstLastLinkAddBio {
-    width: 1000px;
+    width: 500px;
+    background-color: yellow;
+    border: 1px solid pink;
+    z-index: 3;
 }
 
 @media only screen and (max-width: 800px) {
@@ -190,7 +199,7 @@ button :hover {
 }
 
 .wrapUploadImage {
-    position: relative;
+    /*position: relative;*/
     width: 500px;
     text-align: center;
     height: 200px;
@@ -203,7 +212,7 @@ button :hover {
 
 
 .addingBioWrapper {
-    position: relative;
+    /*position: relative;*/
     width: 500px;
     height: 200px;
     background-color: white;
@@ -213,7 +222,7 @@ button :hover {
 }
 
 .bioOtherUser {
-    position: absolute;
+    /*position: absolute;*/
     top: 280px;
     left: 625px;
 }
@@ -222,7 +231,7 @@ button :hover {
 /* Other profile page */
 
 .otherProfilePic2 {
-    position: absolute;
+    /*position: absolute;*/
     width: auto;
     height: 200px;
     left: 300px;
@@ -242,4 +251,15 @@ button :hover {
 .onlineImg {
     width: 100px;
     height: auto;
+}
+
+/* Diplaying News */
+
+.newsWrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.displayNews >img {
+    width: 200px;
 }

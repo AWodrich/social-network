@@ -96,3 +96,14 @@ export function getMessages(messages) {
         return {type: 'ALL_MESSAGES', messages: data.data};
     });
 }
+
+
+export function getNews() {
+    const url = 'https://newsapi.org/v2/top-headlines?' +
+                'sources=crypto-coins-news&' +
+                'apiKey=8a37cb8f51b6445faff2aa74c0655cf4'
+    return axios.get(url)
+      .then(res => {
+          return {type: 'FETCH_NEWS', news: res.data.articles};
+      });
+}

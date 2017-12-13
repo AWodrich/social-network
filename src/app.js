@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from './axios';
 import { Link } from 'react-router';
-import { checkFriendStatus, getUserInfos } from './actions';
+import { checkFriendStatus, getUserInfos, getNews } from './actions';
 import { connect } from 'react-redux';
 import Profile from './profile';
 import {getSocket} from './socket';
@@ -24,6 +24,7 @@ export class App extends Component {
     componentDidMount() {
         getSocket();
         this.props.dispatch(getUserInfos())
+        this.props.dispatch(getNews())
     }
     showUploader() {
         this.setState({
@@ -76,7 +77,7 @@ export class App extends Component {
 
         return (
             <div>
-            <Logo />
+            
                 {children}
                 {this.state.uploaderIsVisible && <UploadImage />}
                 <ProfilePic showUploader={this.showUploader} imgUrl={imageUrl} />
@@ -99,25 +100,6 @@ export default connect(mapStateToProps)(App);
 
 
 // =================== Child Components =======================================//
-
-// Logo Component
-
-export class Logo extends Component {
-    constructor(props) {
-        super(props)
-        this.state ={}
-    }
-    render() {
-
-        return(
-            <div>
-                <img className="logoImg" src="/bitcoin-logo.jpg" />
-            </div>
-        )
-    }
-}
-
-
 
 
 // Functionality click on Profile Pic Component

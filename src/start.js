@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory, browserHistory, Redirect } from 'react-router';
 import { Welcome, Default, Register, Login } from './welcome';
-import { Logo, UploadImage, ProfilePic, Bio, OtherUsers, FriendButton } from './app';
+import { UploadImage, ProfilePic, Bio, OtherUsers, FriendButton } from './app';
 import Profile from './profile';
 import App from './app';
 import OtherUser from './other_user';
@@ -15,6 +15,7 @@ import FriendList from './friendList';
 import * as io from 'socket.io-client';
 import Online from './online';
 import Chat from './chat';
+import FetchNews from './fetchNews';
 
 
 
@@ -38,7 +39,6 @@ const loggedInRouter = (
         <Router history={browserHistory}>
             <Route path="/" component={App}>
                 <Route path="/upload" component={UploadImage} />
-                <Route path="/logo" component={Logo} />
                 <Route path="/profile-img" component={ProfilePic} />
                 <Route path="/add-bio" component={Bio} />
                 <Route path="/friend-status/:id" component={FriendButton} />
@@ -46,6 +46,7 @@ const loggedInRouter = (
                 <Route path="/friends" component={FriendList} />
                 <Route path="/online" component={Online}/>
                 <Route path="/chat" component={Chat} />
+                <Route path="/news" component ={FetchNews} />
                 <IndexRoute component={Profile} />
                 <Redirect from="*" to="/" />
             </Route>
