@@ -21,22 +21,23 @@ export class Profile extends Component {
         return(
             <div className="profileWrapper">
                 <nav className="header">
-                    <h1>Welcome, {this.props.first} {this.props.last}, to your Profile Page</h1>
+                    <h1>{this.props.first}</h1>
                     <div className="headerLinks">
                         <a href="/logout">Logout</a>
                         <Link to="/friends">See friends</Link>
                         <Link to="/online">Who is online</Link>
                         <Link to="/chat">Chat</Link>
+                        <a href="https://www.coindesk.com/price/" target="_blank">Market</a>
                     </div>
                     </nav>
                 <div className="aside-1">
                     <img className="profilePic2"src={this.props.imgUrl} />
                     <h3 className="firstLast">{this.props.first} {this.props.last}</h3>
-                    <h4>Bio</h4>
+                    <h4>Your Interests:</h4>
                     {this.props.bio && <p className="noBioAdded">{this.props.bio}</p>}
-                    {this.props.bio && <Link className="linkToAddBio" to="/add-bio">Edit Bio</Link>}
-                    {!this.props.bio && <h4 className="noBioAdded">No bio added</h4>}
-                    {!this.props.bio && <Link className="linkToAddBio" to="/add-bio">Add Bio</Link>}
+                    {this.props.bio && <Link className="linkToAddBio" to="/add-bio">Edit Interests</Link>}
+                    {!this.props.bio && <h4 className="noBioAdded">No Interests added</h4>}
+                    {!this.props.bio && <Link className="linkToAddBio" to="/add-bio">Add Interests</Link>}
                     {this.props.status && <button>{messageOnButton}</button>}
                 </div>
                 <FetchNews />

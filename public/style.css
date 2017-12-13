@@ -107,27 +107,45 @@ ul {
     width: 500px;
 }
 
-ul > div {
+.newsWrapper {
     margin-bottom: 50px;
     background-color: #fbe59d;
     text-align: center;
 }
 
+
 .headerLinks {
     display: flex;
-    border: 2px solid red;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 30px;
+    margin: 0;
+}
+.headerLinks > a {
+    color: white;
+    text-decoration: none;
+    font-size: 19px;
+}
+
+.headerLinks > a:hover {
+    color: #fbe59d;
 }
 
 .header {
     display: flex;
+    flex-direction: row-reverse;
     flex-grow: 4;
     width: 100%;
     color: white;
+    height: 100px;
     text-align: center;
 }
 .header >h1 {
-    flex-grow: 2
+    flex-grow: 2;
+    text-align: right;
+    margin-right: 100px;
 }
+
 .header >div {
     flex-grow: 1;
 }
@@ -136,22 +154,23 @@ ul > div {
     flex-grow:0;
     display: flex;
     flex-direction: column;
-    border: 5px solid pink;
     height: 100vh;
     width: 200px;
     text-align: center;
+    color: white;
+    box-shadow:10px 30px 30px 40px #fbe59d;
+
 }
 
 .aside-1 > h4 {
     text-decoration: underline;
     margin-top: 30px;
-
+    font-size: 18px;
     margin-bottom: 0
 }
 
 .aside-2 {
     flex-grow:0;
-    border: 5px solid black;
     height: 100vh;
     width: 200px;
 }
@@ -160,13 +179,6 @@ ul > div {
     height: 700px;
     overflow: auto;
 }
-
-
-
-
-
-
-
 
 
 /* After Login / Profile Page */
@@ -181,29 +193,32 @@ ul > div {
 
 .profileImg:hover {
     height: 100px;
+    opacity: 0.7;
 }
 
 
 .profilePic2 {
-    /*position: absolute;*/
     width: 100px;
     height: auto;
-    /*left: 20px;*/
-    /*top:140px;*/
     border-radius: 50px;
 }
 
 .firstLast {
-    /*position: absolute;*/
-    text-decoration: underline;
-    /*top: 90px;*/
-    /*left: 20px;*/
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .linkToAddBio {
-    /*position: absolute;*/
-    /*top: 280px;*/
-    /*left: 20px;*/
+    color: white;
+    text-decoration: none;
+    margin-top: 80px;
+    box-shadow:10px 10px 80px 40px #fbe59d;
+    font-size: 18px;
+
+}
+
+.linkToAddBio:hover {
+    color: #fbe59d;
 }
 
 .noBioAdded {
@@ -245,13 +260,38 @@ ul > div {
 
 .addingBioWrapper {
     position: absolute;
-    width: 500px;
+    width: 300px;
     height: 200px;
     background-color: white;
-    left: 230px;
+    right: 50px;
     border-radius: 50px;
     border: 1px solid orange;
     top: 200px;
+    box-shadow:0px 20px 50px 20px #fbe59d;
+    background-color: transparent;
+
+}
+
+.addingBioWrapper >textarea {
+    width: 80%;
+    height: 150px;
+    margin: 22px;
+    border: 3px solid #fbe59d;
+    background-color: transparent;
+    color: white;
+    font-size: 18px;
+}
+.addingBioWrapper button {
+    background-color: #fbe59d;
+    width: 200px;
+    left: 15%;
+    font-size: 14px;
+    color: #b54e06;
+    font-weight: bold;
+}
+
+.addingBioWrapper button:hover {
+    background-color: white;
 }
 
 .bioOtherUser {
@@ -295,4 +335,39 @@ ul > div {
 h2 {
     font-size: 20px;
     margin: 10px;
+}
+
+
+.friends {
+    color: white;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    box-shadow:30px 30px 30px 40px #fbe59d;
+    width: 200px;
+    background-color:
+    border: 2px solid white;
+    right: 40px;
+}
+
+.friends >h2 {
+    font-weight:normal;
+}
+
+.headlineFriendsList {
+    color: white;
+    position: relative;
+    left: 0%;
+    font-size: 20px;
+}
+
+.noFriends {
+    font-size: 20px;
+    color: white;
+    position: relative;
+    box-shadow:30px 30px 30px 40px #fbe59d;
+    top: 130px;
+    text-align: center;
 }

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getFriends } from './actions';
 import { Link } from 'react-router';
 import { endFriendship, acceptFriendship } from './actions';
+import FetchNews from './fetchNews';
 
 
 export class FriendList extends Component {
@@ -30,11 +31,12 @@ export class FriendList extends Component {
     render() {
         let friends = this.props.friends;
         let pending = this.props.pending;
-        console.log('>>>>>>>this props getting friends list', this.props);
+        console.log('>>>>>>>this props getting friends list', friends);
         if(!friends) {
+            console.log('no friends');
             return (
                 <div>
-                    <h2>No friends</h2>
+                    <h2 className="noFriends">No friends</h2>
                 </div>
             )
         }
@@ -53,8 +55,8 @@ export class FriendList extends Component {
 
             accepted.push(
                 <div>
-                <p>Friends</p>
-                <div key={friend.id}>
+                <p className="headlineFriendsList">Friends:</p>
+                <div className="friends" key={friend.id}>
                     <h2>{friend.first} {friend.last}</h2>
                     <Link to={`/user/${friend.id}`}>
                     <img className="imgFriendsList" src={'https://s3.amazonaws.com/anjaspiced/'+ friend.image} />
@@ -70,8 +72,8 @@ export class FriendList extends Component {
 
             pendingList.push(
                     <div>
-                    <p>Pending Requests</p>
-                    <div key={pending.id}>
+                    <p className="headlineFriendsList">Pending Requests:</p>
+                    <div className="friends" key={pending.id}>
                         <h2>{pending.first} {pending.last}</h2>
                         <Link to={`/user/${pending.id}`}>
                         <img className="imgFriendsList" src={'https://s3.amazonaws.com/anjaspiced/'+ pending.image} />
@@ -83,14 +85,39 @@ export class FriendList extends Component {
         })
 
         return(
-            <div>
-                <div>
 
-                    <ul>{accepted}</ul>
+
+            <div className="profileWrapper">
+                <nav className="header">
+                    <h1>{this.props.first}</h1>
+                    <div className="headerLinks">
+                        <a href="/logout">Logout</a>
+                        <Link to="/friends">See friends</Link>
+                        <Link to="/online">Who is online</Link>
+                        <Link to="/chat">Chat</Link>
+                        <a href="https://www.coindesk.com/price/" target="_blank">Market</a>
+                    </div>
+                    </nav>
+                <div className="aside-1">
+                    <img className="profilePic2"src={this.props.imgUrl} />
+                    <h3 className="firstLast">{this.props.first} {this.props.last}</h3>
+                    <h4>Your Interests:</h4>
+                    {this.props.bio && <p className="noBioAdded">{this.props.bio}</p>}
+                    {this.props.bio && <Link className="linkToAddBio" to="/add-bio">Edit Interests</Link>}
+                    {!this.props.bio && <h4 className="noBioAdded">No Interests added</h4>}
+                    {!this.props.bio && <Link className="linkToAddBio" to="/add-bio">Add Interests</Link>}
+                    {this.props.status && <button>{messageOnButton}</button>}
                 </div>
-                <div>
-
-                    <ul>{pendingList}</ul>
+                <FetchNews />
+                <div className="aside-2">
+                    <div className="scroll">
+                        {!friends || friends.length == 0 && <h2 className="noFriends">No friends</h2>}
+                        <ul>{accepted}</ul>
+                    </div>
+                    <div>
+                        {!pending || pending.length == 0 && <h2 className="noFriends">No pending friend request</h2>}
+                        <ul>{pendingList}</ul>
+                    </div>
                 </div>
             </div>
         )
@@ -98,7 +125,6 @@ export class FriendList extends Component {
 }
 
 const mapStateToProps = function(state) {
-    console.log('>>>>>in mat state to props', state);
     return {
         statusFriendship: state.statusFriendship,
         friends: state.friends && state.friends.filter(user => {
