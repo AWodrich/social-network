@@ -25,23 +25,21 @@
 
 html {
     height: 100%;
-    background-color: red;
 }
 
 body {
-    border: 1px solid blue;
     height: 100%;
-    background-color: blue;
     overflow: hidden;
 }
 
 main {
-    background-color: yellow;
     display: flex;
     flex-direction:row;
     border-color: blue;
     height: 100%;
+    background-image: url('./profile_background.jpg');
 }
+
 
 
 /* Registration Page */
@@ -106,15 +104,32 @@ button :hover {
 
 ul {
     flex-grow: 3;
-    /*width: 300px;*/
-    border: 5px solid grey;
-    height: 100%;
+    width: 500px;
+}
+
+ul > div {
+    margin-bottom: 50px;
+    background-color: #fbe59d;
+    text-align: center;
+}
+
+.headerLinks {
+    display: flex;
+    border: 2px solid red;
 }
 
 .header {
+    display: flex;
     flex-grow: 4;
     width: 100%;
-    border: 5px solid green;
+    color: white;
+    text-align: center;
+}
+.header >h1 {
+    flex-grow: 2
+}
+.header >div {
+    flex-grow: 1;
 }
 
 .aside-1 {
@@ -249,11 +264,11 @@ ul {
 /* Other profile page */
 
 .otherProfilePic2 {
-    /*position: absolute;*/
-    /*width: auto;
+    position: absolute;
+    width: auto;
     height: 200px;
     left: 300px;
-    top: 250px;*/
+    top: 250px;
 
 }
 
@@ -273,11 +288,11 @@ ul {
 
 /* Diplaying News */
 
-.newsWrapper {
-    /*width: 100%;*/
-    /*text-align: center;*/
+.newsImg {
+    width: 400px;
 }
 
-.displayNews >img {
-    width: 200px;
+h2 {
+    font-size: 20px;
+    margin: 10px;
 }

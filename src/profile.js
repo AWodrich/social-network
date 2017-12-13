@@ -22,11 +22,13 @@ export class Profile extends Component {
             <div className="profileWrapper">
                 <nav className="header">
                     <h1>Welcome, {this.props.first} {this.props.last}, to your Profile Page</h1>
-                    <a href="/logout">Logout</a>
-                    <Link to="/friends">See friends</Link>
-                    <Link to="/online">Who is online</Link>
-                    <div><Link to="/chat">Chat</Link></div>
-                </nav>
+                    <div className="headerLinks">
+                        <a href="/logout">Logout</a>
+                        <Link to="/friends">See friends</Link>
+                        <Link to="/online">Who is online</Link>
+                        <Link to="/chat">Chat</Link>
+                    </div>
+                    </nav>
                 <div className="aside-1">
                     <img className="profilePic2"src={this.props.imgUrl} />
                     <h3 className="firstLast">{this.props.first} {this.props.last}</h3>

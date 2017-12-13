@@ -39,13 +39,16 @@ export class FetchNews extends Component {
             {this.props.news && this.props.news.map(results => {
                 return(
                 <div className="newsWrapper" key={results.id}>
+
                     <h2>{results.title}</h2>
                     <div className="displayNews">
-                        <img src={results.urlToImage} />
-                        <p>published: {results.publishedAt}</p>
-                        <p>url: {results.url}</p>
+                        <a href={results.url} target="_blank">
+                        <img className="newsImg" src={results.urlToImage} />
+                        </a>
+                        <p>published: {results.publishedAt && results.publishedAt.slice(0,10)}</p>
                         <p>source: {results.source.name}</p>
                     </div>
+
                 </div>
             )
             })}

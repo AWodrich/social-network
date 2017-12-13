@@ -30,6 +30,7 @@ export class FriendList extends Component {
     render() {
         let friends = this.props.friends;
         let pending = this.props.pending;
+        console.log('>>>>>>>this props getting friends list', this.props);
         if(!friends) {
             return (
                 <div>
@@ -97,6 +98,7 @@ export class FriendList extends Component {
 }
 
 const mapStateToProps = function(state) {
+    console.log('>>>>>in mat state to props', state);
     return {
         statusFriendship: state.statusFriendship,
         friends: state.friends && state.friends.filter(user => {
