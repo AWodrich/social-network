@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getNews } from './actions';
 
+
 export class FetchNews extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +16,8 @@ export class FetchNews extends Component {
       this.props.dispatch(getNews())
   }
 
+
+
   render() {
       console.log('inside FetchNews props', this.props);
       if (!this.props.news) {
@@ -26,12 +29,16 @@ export class FetchNews extends Component {
               console.log('in map');
           })
       }
+
+
+
       return (
-          <div>
+          <div className="scroll">
+
             <ul>
             {this.props.news && this.props.news.map(results => {
                 return(
-                <div className="newsWrapper" key={results.source.id}>
+                <div className="newsWrapper" key={results.id}>
                     <h2>{results.title}</h2>
                     <div className="displayNews">
                         <img src={results.urlToImage} />
@@ -47,6 +54,7 @@ export class FetchNews extends Component {
     );
   }
 }
+
 
 const mapStateToProps = (state) => {
     console.log('++++++inside mapStateToProps state', state)

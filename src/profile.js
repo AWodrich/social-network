@@ -30,7 +30,8 @@ export class Profile extends Component {
                 <div className="aside-1">
                     <img className="profilePic2"src={this.props.imgUrl} />
                     <h3 className="firstLast">{this.props.first} {this.props.last}</h3>
-                    {this.props.bio && <h4 className="noBioAdded">{this.props.bio}</h4>}
+                    <h4>Bio</h4>
+                    {this.props.bio && <p className="noBioAdded">{this.props.bio}</p>}
                     {this.props.bio && <Link className="linkToAddBio" to="/add-bio">Edit Bio</Link>}
                     {!this.props.bio && <h4 className="noBioAdded">No bio added</h4>}
                     {!this.props.bio && <Link className="linkToAddBio" to="/add-bio">Add Bio</Link>}

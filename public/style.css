@@ -32,6 +32,7 @@ body {
     border: 1px solid blue;
     height: 100%;
     background-color: blue;
+    overflow: hidden;
 }
 
 main {
@@ -107,6 +108,7 @@ ul {
     flex-grow: 3;
     /*width: 300px;*/
     border: 5px solid grey;
+    height: 100%;
 }
 
 .header {
@@ -117,9 +119,19 @@ ul {
 
 .aside-1 {
     flex-grow:0;
+    display: flex;
+    flex-direction: column;
     border: 5px solid pink;
     height: 100vh;
     width: 200px;
+    text-align: center;
+}
+
+.aside-1 > h4 {
+    text-decoration: underline;
+    margin-top: 30px;
+
+    margin-bottom: 0
 }
 
 .aside-2 {
@@ -127,6 +139,11 @@ ul {
     border: 5px solid black;
     height: 100vh;
     width: 200px;
+}
+
+.scroll {
+    height: 700px;
+    overflow: auto;
 }
 
 
@@ -139,9 +156,9 @@ ul {
 
 /* After Login / Profile Page */
 .profileImg {
-    /*position: absolute;*/
-    /*top: 20px;*/
-    /*left: 1280px;*/
+    position: absolute;
+    top: 20px;
+    right: 30px;
     width: auto;
     height: 80px;
     border-radius: 50px;
@@ -199,26 +216,27 @@ ul {
 }
 
 .wrapUploadImage {
-    /*position: relative;*/
-    /*width: 500px;
+    position: absolute;
+    width: 500px;
     text-align: center;
     height: 200px;
     background-color: white;
-    top: -100px;
+    top: 150px;
     border-radius: 50px;
     border: 1px solid orange;
-    left: 35%;*/
+    left: 60%;
 }
 
 
 .addingBioWrapper {
-    /*position: relative;*/
-    /*width: 500px;
+    position: absolute;
+    width: 500px;
     height: 200px;
     background-color: white;
     left: 230px;
-    border-radius: 50px;*/
+    border-radius: 50px;
     border: 1px solid orange;
+    top: 200px;
 }
 
 .bioOtherUser {
