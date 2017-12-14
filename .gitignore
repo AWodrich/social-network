@@ -3,4 +3,3 @@ node_modules
 package-lock.json
 secret.json
 secrets.json
-config.json
