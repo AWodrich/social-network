@@ -1,6 +1,5 @@
 node_modules
 .DS_Store
-bundle.js
 package-lock.json
 secret.json
 secrets.json
