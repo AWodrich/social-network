@@ -459,6 +459,6 @@ app.get('*', function(req, res){
 
 
 //=================== setting up server ========================================//
-server.listen(8080, function() {
+server.listen(process.env.PORT || 8080, function() {
     console.log("I'm listening.")
 });
