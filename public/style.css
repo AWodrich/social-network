@@ -48,13 +48,14 @@ main {
     width: 350px;
     text-align: center;
     height: 300px;
-    border: 1px dotted #e04903;
+    border: 2px solid #e04903;
     position: absolute;
     top: 170px;
-    background-color: white;
+    background-color: transparent;
     z-index: 3;
     animation: right 3s forwards;
     border-radius: 50px;
+    box-shadow:0px 10px 10px 10px #e04903;
 }
 
 @keyframes right {
@@ -71,18 +72,30 @@ main {
     height: 30px;
     top: 20px;
     position: relative;
-    border-color: #e04903;
+    border-color: #f0aa04;
 }
 
 
 .goToLogin {
     position: relative;
     top: 100px;
+    color: #e04903;
+    font-size: 18px;
 }
 
-button {
+.welcomeBtn {
+    border: none;
+    color: #f0aa04;
+    font-size: 18px;
+    background-color: transparent;
+
+}
+
+.submitBtnWelcome {
     position: relative;
     top: 30px;
+    background-color: #f0aa04;
+
 }
 
 button :hover {
@@ -127,7 +140,22 @@ ul {
     font-size: 19px;
 }
 
+.headerLinks > button {
+    position: relative;
+    top: -5px;
+    background-color: transparent;
+    color: white;
+    font-size: 16.5px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+}
+
 .headerLinks > a:hover {
+    color: #fbe59d;
+}
+
+.headerLinks > button:hover {
     color: #fbe59d;
 }
 
@@ -143,7 +171,7 @@ ul {
 .header >h1 {
     flex-grow: 2;
     text-align: right;
-    margin-right: 100px;
+    margin-right: 160px;
 }
 
 .header >div {
@@ -158,7 +186,7 @@ ul {
     width: 200px;
     text-align: center;
     color: white;
-    box-shadow:10px 30px 30px 40px #fbe59d;
+    box-shadow:20px 40px 40px 40px #fbe59d;
 
 }
 
@@ -173,6 +201,7 @@ ul {
     flex-grow:0;
     height: 100vh;
     width: 200px;
+    box-shadow: 10px 10px 80px 40px #fbe59d;
 }
 
 .scroll {
@@ -206,14 +235,24 @@ ul {
 .firstLast {
     text-decoration: none;
     font-weight: bold;
+    background-color: #fbe59d;
+    box-shadow:10px 10px 80px 40px #fbe59d;
+    color: #3c140a;
+}
+
+.aside-1 > h4 {
+    background-color: #fbe59d;
+    box-shadow:10px 10px 80px 40px #fbe59d;
+    color: #3c140a;
 }
 
 .linkToAddBio {
-    color: white;
+    color: #3c140a;
     text-decoration: none;
     margin-top: 80px;
     box-shadow:10px 10px 80px 40px #fbe59d;
     font-size: 18px;
+    background-color: #fbe59d;
 
 }
 
@@ -222,41 +261,47 @@ ul {
 }
 
 .noBioAdded {
-    /*position: absolute;*/
-    /*left: 20px;
-    top: 290px;*/
+    background-color: #fbe59d;
+    box-shadow:10px 10px 80px 20px #fbe59d;
+    color: #3c140a;
+    word-wrap: break-word;
 }
 
 .wrapFirstLastLinkAddBio {
-    /*width: 500px;*/
-    border: 5px solid orange;
     z-index: 3;
+    background-color: #fbe59d;
+    box-shadow:20px 40px 40px 40px #fbe59d;
+
 }
 
 
 
 .wrapLogoH1 {
     border: 1px solid pink;
-    /*width: 1000px;*/
-    /*display: flex;*/
-    /*flex-direction: row;*/
-    /*justify-content: space-around;*/
-    /*position: relative;*/
-    /*top: -100px;*/
+
 }
 
 .wrapUploadImage {
     position: absolute;
-    width: 500px;
+    width: 300px;
     text-align: center;
     height: 200px;
-    background-color: white;
     top: 150px;
     border-radius: 50px;
     border: 1px solid orange;
-    left: 60%;
+    left: 75%;
+    background-color: #fbe59d;
+    box-shadow:10px 10px 80px 20px #fbe59d;
+    color: #3c140a;
 }
 
+.wrapUploadImage > h1 {
+    font-size: 20px;
+}
+
+.wrapUploadImage > button:hover {
+    background-color: #fbe59d;
+}
 
 .addingBioWrapper {
     position: absolute;
@@ -269,29 +314,29 @@ ul {
     top: 200px;
     box-shadow:0px 20px 50px 20px #fbe59d;
     background-color: transparent;
-
 }
 
 .addingBioWrapper >textarea {
     width: 80%;
     height: 150px;
     margin: 22px;
-    border: 3px solid #fbe59d;
-    background-color: transparent;
-    color: white;
-    font-size: 18px;
+    background-color: #fbe59d;
+    color: #3c140a;
+    font-size: 17px;
 }
 .addingBioWrapper button {
+    position: relative;
     background-color: #fbe59d;
     width: 200px;
-    left: 15%;
+    left: 20%;
     font-size: 14px;
-    color: #b54e06;
+    color: #3c140a;
     font-weight: bold;
 }
 
 .addingBioWrapper button:hover {
     background-color: white;
+    border: 1px dotted #3c140a;
 }
 
 .bioOtherUser {
@@ -326,6 +371,34 @@ ul {
     height: auto;
 }
 
+.onlineImg:hover {
+    opacity: 0.7;
+}
+
+.online {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 30px;
+    align-items: center;
+    color: black;
+    box-shadow:30px 30px 30px 40px #fbe59d;
+    background-color: #fbe59d;
+}
+
+.online >p {
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+.headlineOnline >h1 {
+    font-size: 18px;
+    color: white;
+    text-decoration: underline;
+
+}
+
 /* Diplaying News */
 
 .newsImg {
@@ -339,7 +412,7 @@ h2 {
 
 
 .friends {
-    color: white;
+    color: black;
     position: relative;
     display: flex;
     justify-content: center;
@@ -347,8 +420,7 @@ h2 {
     text-align: center;
     box-shadow:30px 30px 30px 40px #fbe59d;
     width: 200px;
-    background-color:
-    border: 2px solid white;
+    background-color: #fbe59d;
     right: 40px;
 }
 
@@ -368,6 +440,51 @@ h2 {
     color: white;
     position: relative;
     box-shadow:30px 30px 30px 40px #fbe59d;
-    top: 130px;
+    top: 30px;
+    right: 0px;
     text-align: center;
+}
+
+/* chatting */
+
+.chat {
+    position: absolute;
+    width: 200px;
+    right: 8px;
+    top: 150px;
+    max-height: 400px;
+    background-color: #fbe59d;
+    box-shadow:30px 30px 30px 40px #fbe59d;
+}
+
+.chatText {
+    width: 150px;
+    color: #3c140a;
+    text-align: center;
+    font-size: 17px;
+    word-wrap: break-word;
+}
+
+.chat >textarea {
+    width: 60%;
+    height: 80px;
+    margin: 30px;
+    border: 3px solid #3c140a;
+    background-color: transparent;
+    color: #3c140a;
+    font-size: 16px;
+}
+.chat button {
+    position: relative;
+    left: 15%;
+    top: 0px;
+    width: 130px;
+    height: 20px;
+    color: #3c140a;
+
+}
+
+.chat button:hover {
+    background-color: #fbe59d;
+    border: 1px dotted #3c140a;
 }

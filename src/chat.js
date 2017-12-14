@@ -36,26 +36,23 @@ class Chat extends React.Component {
       console.log('props?', this.props);
       var messageList =[];
       if (this.props.messages) {
-          console.log('////', this.props.messages);
           this.props.messages.map(message => {
-              console.log('message', message);
               messageList.push(
-                  <div>
-                    <p>{message.first} says: {message.message}</p>
+                  <div className="chatText">
+                    <p>{message.first}: {message.message}</p>
                   </div>
               )
           })
-          console.log('messageList',messageList,'????????');
       }
 
 
     // index of array
 
         return (
-            <div id='chat'>
-            <div id="chatBox" ref={elem => this.elem = elem}>{this.props.messages && messageList}</div>
-            <textarea ref={textArea => this.textArea = textArea} name="composedMessage"></textarea>
-            <button onClick={() => this.props.postMessage(this.textArea.value)}>Post</button>
+            <div className="scroll chat">
+                <div id="chatBox" ref={elem => this.elem = elem}>{this.props.messages && messageList}</div>
+                <textarea ref={textArea => this.textArea = textArea} name="composedMessage"></textarea>
+                <button onClick={() => this.props.postMessage(this.textArea.value)}>Post</button>
             </div>
         )
     }

@@ -14,8 +14,8 @@ export class FriendList extends Component {
     }
 
     componentDidMount() {
+        console.log('this props', this.props);
         this.props.dispatch(getFriends(this.props.id))
-        let id = this.props.params.id
     }
 
     endFriendship(friendId) {
@@ -31,7 +31,6 @@ export class FriendList extends Component {
     render() {
         let friends = this.props.friends;
         let pending = this.props.pending;
-        console.log('>>>>>>>this props getting friends list', friends);
         if(!friends) {
             console.log('no friends');
             return (
@@ -84,32 +83,9 @@ export class FriendList extends Component {
             )
         })
 
+
         return(
-
-
-            <div className="profileWrapper">
-                <nav className="header">
-                    <h1>{this.props.first}</h1>
-                    <div className="headerLinks">
-                        <a href="/logout">Logout</a>
-                        <Link to="/friends">See friends</Link>
-                        <Link to="/online">Who is online</Link>
-                        <Link to="/chat">Chat</Link>
-                        <a href="https://www.coindesk.com/price/" target="_blank">Market</a>
-                    </div>
-                    </nav>
-                <div className="aside-1">
-                    <img className="profilePic2"src={this.props.imgUrl} />
-                    <h3 className="firstLast">{this.props.first} {this.props.last}</h3>
-                    <h4>Your Interests:</h4>
-                    {this.props.bio && <p className="noBioAdded">{this.props.bio}</p>}
-                    {this.props.bio && <Link className="linkToAddBio" to="/add-bio">Edit Interests</Link>}
-                    {!this.props.bio && <h4 className="noBioAdded">No Interests added</h4>}
-                    {!this.props.bio && <Link className="linkToAddBio" to="/add-bio">Add Interests</Link>}
-                    {this.props.status && <button>{messageOnButton}</button>}
-                </div>
-                <FetchNews />
-                <div className="aside-2">
+                <div>
                     <div className="scroll">
                         {!friends || friends.length == 0 && <h2 className="noFriends">No friends</h2>}
                         <ul>{accepted}</ul>
@@ -119,7 +95,6 @@ export class FriendList extends Component {
                         <ul>{pendingList}</ul>
                     </div>
                 </div>
-            </div>
         )
     }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getOtherUserInfo, getFriendshipStatus, updateFriendshipStatus } from './actions';
+import FetchNews from './fetchNews';
 
 export class OtherUser extends Component {
     constructor(props) {
@@ -62,18 +63,40 @@ export class OtherUser extends Component {
 
         let { first, last, image, bios, id } = this.props.otherUserInfo;
         let status = this.props.statusFriendship;
-        if(!image) {
-            image = '/defaultProfileImg.jpg'
-        }
+
 
         return(
-            <div className="profile">
-                <h1>Welcome, {first} {last}, to your webpage.</h1>
-                <img className="profileImg" src={image} />
-                <img className="otherProfilePic2" src={image} />
-                <h3 className="firstLast">{first} {last}</h3>
-                <h4 className="bioOtherUser">{bios}</h4>
-                <button onClick={this.updateFriendshipStatus}>{this.getButtonTxt()}</button>
+
+            <div className="profileWrapper">
+                <nav className="header">
+                    <h1></h1>
+                    <div className="headerLinks">
+                        <a>Logout</a>
+                        <button>See friends</button>
+                        <button>Who is online</button>
+                        <button>Chat</button>
+                        <a>Market</a>
+                    </div>
+                    </nav>
+                <div className="aside-1">
+                    {image && <img className="profilePic2" src={image} />}
+                    {image && <img className="profileImg" src={image} />}
+                    {!image && <img className="profilePic2" src="./defaultProfileImg.jpg" />}
+                    {!image && <img className="profileImg" src="./defaultProfileImg.jpg" />}
+                    <h3 className="firstLast">{first} {last}</h3>
+                    <h4>Interests:</h4>
+                    {bios && <p className="noBioAdded">{bios}</p>}
+                    {bios && <p>Edit Interests</p>}
+                    {!bios && <h4 className="noBioAdded">No Interests added</h4>}
+                    {!bios && <p>Add Interests</p>}
+                    <button onClick={this.updateFriendshipStatus}>{this.getButtonTxt()}</button>
+                </div>
+                <FetchNews />
+                <div className="aside-2">
+                    {this.state.component == 'online' && <Online />}
+                    {this.state.component == 'chat' && <Chat />}
+                    {this.state.component == 'friends' && <FriendList />}
+                </div>
             </div>
         )
     }

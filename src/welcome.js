@@ -12,9 +12,9 @@ export class Welcome extends Component {
         this.showRegistration = this.showRegistration.bind(this)
 
     }
-    showRegistration() {
+    showRegistration(string) {
         this.setState({
-            active: true
+            active: string
         })
 
     }
@@ -26,7 +26,8 @@ export class Welcome extends Component {
 
         return (
             <div>
-                {this.state.active && <Register />}
+                {this.state.active == "register" && <Register showRegistration={this.showRegistration} />}
+                {this.state.active == "login" && <Login showRegistration={this.showRegistration} />}
                 {children}
             </div>
         )
@@ -56,7 +57,6 @@ export class Register extends React.Component {
 
     }
     onSubmit(e) {
-        console.log('clicking the register button');
         e.preventDefault();
         console.log(e.target);
        // getting form data out of state
@@ -86,6 +86,7 @@ export class Register extends React.Component {
 
     }
     render() {
+        console.log('this.props. registration+++++', this.props);
         const { first, last, email } = this.state;
         return (
             <div>
@@ -95,10 +96,10 @@ export class Register extends React.Component {
                     <input className="input" onChange={this.onChange} type="text" nameClass="inputRegister" name="last" placeholder="Enter Last Name" />
                     <input className="input" onChange={this.onChange} type="text" nameClass="inputRegister" name="email" placeholder="Enter E-Mail" />
                     <input className="input" onChange={this.onChange} type="password" nameClass="inputRegister" name="password" placeholder="Enter Password" />
-                    <button onClick={this.onSubmit} type="button" nameClass="registerSubmit">Register</button>
+                    <button className="submitBtnWelcome" onClick={this.onSubmit} type="button" nameClass="registerSubmit">Register</button>
                     <div className="goToLogin">
                         <p>Already a Member?
-                        <Link to="/login">Login </Link>
+                        <button className="welcomeBtn" onClick={() => this.props.showRegistration('login')}>Login </button>
                         here</p>
                     </div>
                     {this.props.children}
@@ -121,6 +122,7 @@ export class Login extends React.Component {
         }
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
+        this.goBackToRegister = this.goBackToRegister.bind(this)
     }
     onChange(e) {
         const state = {};
@@ -135,7 +137,6 @@ export class Login extends React.Component {
 
         axios.post('/authorize', { email, password })
             .then(res => {
-                // console.log('+++++++++what is res after successful login?', res.data);
                 if(res.data.success) {
                     location.replace('/')
                 } else {
@@ -145,17 +146,20 @@ export class Login extends React.Component {
          });
 
     }
+
+    goBackToRegister() {
+        this.setState({register:true})
+    }
     render() {
-        console.log('this.props', this.props);
         return(
-            <div className="containerLogo">
+            <div className="register">
                 {this.state.error && <div>Wrong login data</div>}
-                <h1>Login Page</h1>
-                <input onChange={this.onChange} type="text" nameClass="inputRegister" name="email" placeholder="Enter E-Mail" />
-                <input onChange={this.onChange} type="password" nameClass="inputRegister" name="password" placeholder="Enter Password" />
-                <button onClick={this.onSubmit} type="button" nameClass="registerSubmit">Login</button>
-                <div>
-                    Go back for <Link to='/'>Register</Link>
+                <h1></h1>
+                <input className="input" onChange={this.onChange} type="text" nameClass="inputRegister" name="email" placeholder="Enter E-Mail" />
+                <input className="input" onChange={this.onChange} type="password" nameClass="inputRegister" name="password" placeholder="Enter Password" />
+                <button className="submitBtnWelcome" onClick={this.onSubmit} type="button" nameClass="registerSubmit">Login</button>
+                <div className="goToLogin">
+                    Go back for <button className="welcomeBtn" onClick={() => this.props.showRegistration('register')}>Register</button>
                     {this.props.children}
                 </div>
             </div>
@@ -174,13 +178,13 @@ export class Default extends Component {
         this.state = {}
     }
     render() {
-        console.log('in default', this.props);
+        console.log('in default?????????', this.props);
         return(
             <div className="welcomeWrapper">
                 <img className="welcomeBackground" src="/bitcoin-background.jpg" />
                 <h1>Bit$Net</h1>
                 <h2>The Social Network for Bitcoin Lovers</h2>
-                <div className="clickForRegister" onClick={this.props.showRegistration} className="clickForRegister" />
+                <div className="clickForRegister" onClick={() => this.props.showRegistration('register')} className="clickForRegister" />
             </div>
         )
     }

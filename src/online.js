@@ -15,7 +15,6 @@ class Online extends React.Component {
   }
 
   render() {
-    console.log('props in online file', this.props);
     let whosOnline = this.props.usersOnline
     if (!whosOnline) {
       return (<div className="online">
@@ -26,22 +25,18 @@ class Online extends React.Component {
     const list = [];
     const onlineList = whosOnline.map(user => {
         list.push(
-        <div key={user.id}>
-            <p>This should be user</p>
-            <Link to={`/user/${user.id}`}>{user.first} {user.last}</Link>
-            <img className="onlineImg" src={user.image} alt=""/>
+        <div className="online" key={user.id}>
+            <p>{user.first} {user.last}</p>
+            <Link to={`/user/${user.id}`}>{!user.image && <img className="online onlineImg" src='./defaultProfileImg.jpg' />}
+            <img className="onlineImg" src={user.image} alt=""/></Link>
         </div>
         )
     })
-        console.log('inside list online', list);
-
 
     return (
-        <div className="online">
-            <h1>Whos Online?</h1>
-
-            <div>{list}</div>
-
+        <div className="headlineOnline">
+            <h1>Online Users: </h1>
+                <div>{list}</div>
         </div>
     )
   }

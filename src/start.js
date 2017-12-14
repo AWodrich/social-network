@@ -14,7 +14,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import FriendList from './friendList';
 import * as io from 'socket.io-client';
 import Online from './online';
-import Chat from './chat';
+// import Chat from './chat';
 import FetchNews from './fetchNews';
 
 
@@ -43,11 +43,11 @@ const loggedInRouter = (
                 <Route path="/add-bio" component={Bio} />
                 <Route path="/friend-status/:id" component={FriendButton} />
                 <Route path="/user/:id" component={OtherUser} />
-                <Route path="/friends" component={FriendList} />
                 <Route path="/online" component={Online}/>
-                <Route path="/chat" component={Chat} />
                 <Route path="/news" component ={FetchNews} />
-                <IndexRoute component={Profile} />
+                <IndexRoute component={Profile}>
+                    <Route path="/friends" component={FriendList} />
+                </IndexRoute>
                 <Redirect from="*" to="/" />
             </Route>
         </Router>

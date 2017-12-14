@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { FriendList } from './friendList';
+import FriendList from './friendList';
 import FetchNews from './fetchNews';
+import Online from './online';
+import Chat from './chat';
 
 
 
 export class Profile extends Component {
     constructor(props) {
-        super(props)
-        this.state = {}
+        super(props);
+        this.state = {};
     }
 
     componentDidMount(){
     }
 
+    clicked(str) {
+        this.setState({component: str})
+    }
+
     render() {
-        let id = this.props.id
+        let id = this.props.id;
+
+        // const children = React.cloneElement(this.props.children, {
+        //     first: this.props.first,
+        //     id
+        // });
 
         return(
             <div className="profileWrapper">
@@ -24,9 +35,9 @@ export class Profile extends Component {
                     <h1>{this.props.first}</h1>
                     <div className="headerLinks">
                         <a href="/logout">Logout</a>
-                        <Link to="/friends">See friends</Link>
-                        <Link to="/online">Who is online</Link>
-                        <Link to="/chat">Chat</Link>
+                        <button onClick={() => {this.clicked('friends')}}>See friends</button>
+                        <button onClick={() => this.clicked('online')}>Who is online</button>
+                        <button onClick={() => this.clicked('chat')}>Chat</button>
                         <a href="https://www.coindesk.com/price/" target="_blank">Market</a>
                     </div>
                     </nav>
@@ -41,12 +52,21 @@ export class Profile extends Component {
                     {this.props.status && <button>{messageOnButton}</button>}
                 </div>
                 <FetchNews />
-                <div className="aside-2" />
-
+                <div className="aside-2">
+                    {this.state.component == 'online' && <Online />}
+                    {this.state.component == 'chat' && <Chat />}
+                    {this.state.component == 'friends' && <FriendList />}
+                </div>
+                {this.props.children}
             </div>
         )
     }
 }
+
+// <Link to="/online">Who is online</Link>
+// <Link to="/chat">Chat</Link>
+
+
 
 const mapStateToProps = function(state) {
     return {
