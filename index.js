@@ -325,7 +325,7 @@ app.get('/user/:id/friends', (req, res) => {
 
 let users = [];
 
-io.on('connection', socket => {
+io.sockets.on('connection', socket => {
     console.log('Connected: %s users connected', users.length);
 
     // DISCONNECT, tells me how many users are still online, when a user has desconnected
