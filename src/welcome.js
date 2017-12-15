@@ -132,6 +132,7 @@ export class Login extends React.Component {
 
     }
     onSubmit(e) {
+        console.log('in here');
         e.preventDefault();
         let { email, password } = this.state;
 
