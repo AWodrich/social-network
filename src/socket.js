@@ -34,23 +34,9 @@ function getSocket() {
         })
 
         socket.on('newMessage', messageObj => {
-            console.log('new message', messageObj);
             store.dispatch(getMessages(messageObj))
         })
 
         return socket;
     }
 }
-
-
-
-
-// online users
-// <div className="container">
-//     <div className="row">
-//         <div className="onlineUsers">
-//             <h3>Online Users</h3>
-//             <ul className="onlineUsers"></ul>
-//         </div>
-//     </div>
-// </div>

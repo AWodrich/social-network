@@ -35,10 +35,9 @@ export default function(state = {}, action) {
     }
 
     if (action.type == 'NEW_USER') {
-
-            state = Object.assign({}, state, {
-                usersOnline: state.usersOnline && state.usersOnline.concat([action.id])
-            })
+        state = Object.assign({}, state, {
+            usersOnline: state.usersOnline && state.usersOnline.concat([action.id])
+        })
 
     }
     if (action.type == 'USER_LEFT') {
@@ -58,7 +57,6 @@ export default function(state = {}, action) {
     }
 
     if (action.type == 'FETCH_NEWS') {
-        console.log('action', action.news);
         state = Object.assign({}, state, {
             news: action.news
         })

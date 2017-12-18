@@ -21,7 +21,6 @@ export function getOtherUserInfo(id) {
     })
 }
 
-
 export function getFriendshipStatus(id) {
     return axios.get('/friend-status/' + id)
     .then(({data}) => {
@@ -79,7 +78,6 @@ export function userLeft(id){
 }
 
 export function postMessage(message) {
-    console.log('in post message', message);
     let data = {
         messageContents: message
     }
@@ -92,11 +90,9 @@ export function postMessage(message) {
 export function getMessages(messages) {
     return axios.get('/chat.json/')
     .then(data => {
-        console.log('here should be the message data========', data);
         return {type: 'ALL_MESSAGES', messages: data.data};
     });
 }
-
 
 export function getNews() {
     const url = 'https://newsapi.org/v2/top-headlines?' +

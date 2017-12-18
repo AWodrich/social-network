@@ -1,27 +1,4 @@
-/* Main Layout */
-
-
-
-/* Registration Page */
-.welcomeBackground {
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-    top: 0px;
-    left: 0px;
-    z-index: 1;
-}
-
-.clickForRegister {
-    position: absolute;
-    width: 270px;
-    height: 260px;
-    border-radius: 150px;
-    background-color: transparent;
-    z-index: 3;
-    left: 580px;
-    top: 280px;
-}
+/* ============= Main Elements ================ */
 
 html {
     height: 100%;
@@ -34,15 +11,52 @@ body {
 
 main {
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     border-color: blue;
     height: 100%;
     background-image: url('./profile_background.jpg');
 }
 
 
+/* ============ Registration/Login Page ============== */
+.welcomeBackground {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
 
-/* Registration Page */
+/*  register / login */
+
+.clickForRegister {
+    position: absolute;
+    cursor: pointer;
+    width: 310px;
+    height: 300px;
+    border-radius: 150px;
+    background-color: transparent;
+    z-index: 3;
+    left: 560px;
+    top: 260px;
+}
+
+.errorRegister {
+    position: relative;
+    color: white;
+    z-index: 3;
+    top: 320px;
+    left: 1100px;
+}
+
+.errorLogin {
+    position: relative;
+    color: white;
+    z-index: 3;
+    top: 20px;
+    left: 0px;
+}
 
 .register {
     width: 350px;
@@ -75,6 +89,7 @@ main {
     border-color: #f0aa04;
 }
 
+/*  Buttons and Links*/
 
 .goToLogin {
     position: relative;
@@ -88,7 +103,6 @@ main {
     color: #f0aa04;
     font-size: 18px;
     background-color: transparent;
-
 }
 
 .submitBtnWelcome {
@@ -100,32 +114,32 @@ main {
 
 button :hover {
     background-color: #e04903;
-    /*animation: opacity 2s ease-in;*/
 }
 
 
 
 
-/* Profile Page */
-
-.profileWrapper {
+/* =========== Profile Page ============ */
+/*  Header */
+.header {
     display: flex;
-    flex-flow: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-ul {
-    flex-grow: 3;
-    width: 500px;
-}
-
-.newsWrapper {
-    margin-bottom: 50px;
-    background-color: #fbe59d;
+    flex-direction: row-reverse;
+    flex-grow: 4;
+    width: 100%;
+    color: white;
+    height: 100px;
     text-align: center;
 }
 
+.header > h1 {
+    flex-grow: 2;
+    text-align: right;
+    margin-right: 160px;
+}
+
+.header > div {
+    flex-grow: 1;
+}
 
 .headerLinks {
     display: flex;
@@ -134,6 +148,7 @@ ul {
     height: 30px;
     margin: 0;
 }
+
 .headerLinks > a {
     color: white;
     text-decoration: none;
@@ -158,25 +173,36 @@ ul {
 .headerLinks > button:hover {
     color: #fbe59d;
 }
-
-.header {
+.profileWrapper {
     display: flex;
-    flex-direction: row-reverse;
-    flex-grow: 4;
-    width: 100%;
-    color: white;
-    height: 100px;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/*  Display News */
+
+ul {
+    flex-grow: 3;
+    width: 500px;
+}
+
+.newsWrapper {
+    margin-bottom: 50px;
+    background-color: #fbe59d;
     text-align: center;
 }
-.header >h1 {
-    flex-grow: 2;
-    text-align: right;
-    margin-right: 160px;
+
+.newsImg {
+    width: 400px;
 }
 
-.header >div {
-    flex-grow: 1;
+h2 {
+    font-size: 20px;
+    margin: 10px;
 }
+
+/*  Side Bars */
 
 .aside-1 {
     flex-grow:0;
@@ -187,14 +213,12 @@ ul {
     text-align: center;
     color: white;
     box-shadow:20px 40px 40px 40px #fbe59d;
-
 }
 
 .aside-1 > h4 {
-    text-decoration: underline;
-    margin-top: 30px;
-    font-size: 18px;
-    margin-bottom: 0
+    background-color: #fbe59d;
+    box-shadow:10px 10px 80px 40px #fbe59d;
+    color: #3c140a;
 }
 
 .aside-2 {
@@ -204,13 +228,15 @@ ul {
     box-shadow: 10px 10px 80px 40px #fbe59d;
 }
 
+/*  Scroll News/Chat */
+
 .scroll {
     height: 700px;
     overflow: auto;
 }
 
 
-/* After Login / Profile Page */
+/*  Profile Images */
 .profileImg {
     position: absolute;
     top: 20px;
@@ -223,6 +249,7 @@ ul {
 .profileImg:hover {
     height: 100px;
     opacity: 0.7;
+    cursor: pointer;
 }
 
 
@@ -232,39 +259,14 @@ ul {
     border-radius: 50px;
 }
 
+/*  Styling Headlines */
+
 .firstLast {
     text-decoration: none;
     font-weight: bold;
     background-color: #fbe59d;
     box-shadow:10px 10px 80px 40px #fbe59d;
     color: #3c140a;
-}
-
-.aside-1 > h4 {
-    background-color: #fbe59d;
-    box-shadow:10px 10px 80px 40px #fbe59d;
-    color: #3c140a;
-}
-
-.linkToAddBio {
-    color: #3c140a;
-    text-decoration: none;
-    margin-top: 80px;
-    box-shadow:10px 10px 80px 40px #fbe59d;
-    font-size: 18px;
-    background-color: #fbe59d;
-
-}
-
-.linkToAddBio:hover {
-    color: #fbe59d;
-}
-
-.noBioAdded {
-    background-color: #fbe59d;
-    box-shadow:10px 10px 80px 20px #fbe59d;
-    color: #3c140a;
-    word-wrap: break-word;
 }
 
 .wrapFirstLastLinkAddBio {
@@ -274,13 +276,23 @@ ul {
 
 }
 
+/*  Links */
 
-
-.wrapLogoH1 {
-    border: 1px solid pink;
-
+.linkToAddBio {
+    color: #3c140a;
+    text-decoration: none;
+    margin-top: 80px;
+    box-shadow:10px 10px 80px 40px #fbe59d;
+    font-size: 18px;
+    background-color: #fbe59d;
 }
 
+.linkToAddBio:hover {
+    color: #fbe59d;
+}
+
+
+/*  Uploading Image */
 .wrapUploadImage {
     position: absolute;
     width: 300px;
@@ -301,6 +313,26 @@ ul {
 
 .wrapUploadImage > button:hover {
     background-color: #fbe59d;
+}
+
+.noUplaod {
+    position: relative;
+    top: -137px;
+    right: -60px;
+    width: 15px;
+    height: 15px;
+    padding: 0px;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 70px;
+}
+
+/*  Edit Bio/Info/Interests */
+.noBioAdded {
+    background-color: #fbe59d;
+    box-shadow:10px 10px 80px 20px #fbe59d;
+    color: #3c140a;
+    word-wrap: break-word;
 }
 
 .addingBioWrapper {
@@ -324,6 +356,7 @@ ul {
     color: #3c140a;
     font-size: 17px;
 }
+
 .addingBioWrapper button {
     position: relative;
     background-color: #fbe59d;
@@ -339,13 +372,6 @@ ul {
     border: 1px dotted #3c140a;
 }
 
-.bioOtherUser {
-    /*position: absolute;*/
-    /*top: 280px;
-    left: 625px;*/
-}
-
-
 /* Other profile page */
 
 .otherProfilePic2 {
@@ -354,18 +380,15 @@ ul {
     height: 200px;
     left: 300px;
     top: 250px;
-
 }
 
 /* Friends List */
-
 .imgFriendsList {
     width: 100px;
     height: 100px;
 }
 
 /* Online Users */
-
 .onlineImg {
     width: 100px;
     height: auto;
@@ -392,25 +415,14 @@ ul {
     font-size: 18px;
     font-weight: bold;
 }
+
 .headlineOnline >h1 {
     font-size: 18px;
     color: white;
     text-decoration: underline;
-
 }
 
-/* Diplaying News */
-
-.newsImg {
-    width: 400px;
-}
-
-h2 {
-    font-size: 20px;
-    margin: 10px;
-}
-
-
+/*  Friend List */
 .friends {
     color: black;
     position: relative;
@@ -446,7 +458,6 @@ h2 {
 }
 
 /* chatting */
-
 .chat {
     position: absolute;
     width: 200px;
@@ -465,7 +476,7 @@ h2 {
     word-wrap: break-word;
 }
 
-.chat >textarea {
+.chat > textarea {
     width: 60%;
     height: 80px;
     margin: 30px;

@@ -10,6 +10,7 @@ export class OtherUser extends Component {
 
         this.updateFriendshipStatus = this.updateFriendshipStatus.bind(this);
     }
+
     componentDidMount() {
         let id = this.props.params.id
         this.props.dispatch(getOtherUserInfo(id))
@@ -18,7 +19,6 @@ export class OtherUser extends Component {
 
     updateFriendshipStatus() {
         let id = this.props.params.id
-        console.log('what is the status of friendship?', this.props.statusFriendship);
         if (this.props.statusFriendship == 1) {
             if (this.props.id == this.props.recipientId) {
                 this.props.dispatch(updateFriendshipStatus(id, 3))
@@ -32,7 +32,7 @@ export class OtherUser extends Component {
         }
     }
 
-    getButtonTxt(){
+    getButtonTxt() {
 
         let status = this.props.statusFriendship
 
@@ -55,8 +55,7 @@ export class OtherUser extends Component {
         }
     }
 
-    render(){
-        console.log('this.props.', this.props);
+    render() {
         if (!this.props.otherUserInfo) {
             return null
         }

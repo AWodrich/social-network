@@ -1,4 +1,3 @@
-// import Profile from './profile';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getFriends } from './actions';
@@ -14,7 +13,6 @@ export class FriendList extends Component {
     }
 
     componentDidMount() {
-        console.log('this props', this.props);
         this.props.dispatch(getFriends(this.props.id))
     }
 
@@ -39,6 +37,7 @@ export class FriendList extends Component {
                 </div>
             )
         }
+
         if(!pending) {
             return(
                 <div>
@@ -46,8 +45,6 @@ export class FriendList extends Component {
                 </div>
             )
         }
-
-
 
         const accepted = [];
         const friendList = friends.map(friend => {

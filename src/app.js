@@ -7,44 +7,32 @@ import Profile from './profile';
 import {getSocket} from './socket';
 
 
-
-
-// props.children ist coming from react-Router
-// Container App
-
-
 export class App extends Component {
     constructor(props) {
         super(props);
         this.state = {};
         this.showUploader = this.showUploader.bind(this)
         this.setBio = this.setBio.bind(this)
-        this.checkForRequests = this.checkForRequests.bind(this)
+        // this.checkForRequests = this.checkForRequests.bind(this)
     }
+
     componentDidMount() {
         getSocket();
         this.props.dispatch(getUserInfos())
         this.props.dispatch(getNews())
     }
+
     showUploader() {
         this.setState({
             uploaderIsVisible: true
         })
     }
+
     setBio(bio) {
         this.setState({
             bio: bio
         })
     }
-
-    setFriendStatus(newStatus){
-
-    }
-
-    checkForRequests(data) {
-
-    }
-
 
     render() {
         if (!this.props.user) {
@@ -65,8 +53,7 @@ export class App extends Component {
             id,
             showUploader: this.showUploader,
             setBio: this.setBio,
-            checkForRequests: this.checkForRequests
-
+            // checkForRequests: this.checkForRequests
         });
 
         if(!this.state) {
@@ -93,27 +80,22 @@ const mapStateToProps = function(state) {
 
 export default connect(mapStateToProps)(App);
 
-// <Bio showBio={this.showBio} />
-
-
 
 
 // =================== Child Components =======================================//
 
-
-// Functionality click on Profile Pic Component
 
 export class ProfilePic extends Component {
     constructor(props) {
         super(props)
         this.state={}
     }
+
     render() {
-
-
         if(!this.state) {
             return null
         }
+
         return(
             <div>
                 <img onClick={this.props.showUploader} className='profileImg' src={this.props.imgUrl} />
@@ -121,7 +103,6 @@ export class ProfilePic extends Component {
         )
     }
 }
-
 
 
 // Upload Image Component
@@ -133,7 +114,9 @@ export class UploadImage extends Component {
 
         this.uploadImage = this.uploadImage.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.noUpload = this.noUpload.bind(this);
     }
+
     uploadImage(e) {
         e.preventDefault();
 
@@ -141,16 +124,22 @@ export class UploadImage extends Component {
         formData.append('file', this.state.file);
 
         axios.post('/upload', formData)
-        .then(res => {
-            location.replace('/')
-        })
+            .then(res => {
+                location.replace('/')
+            })
     }
+
+    noUpload() {
+        location.replace('/')
+    }
+
     onChange(e) {
         const state = {};
         state[e.target.type] = e.target.files[0];
         this.setState(state);
 
     }
+
     render() {
         return (
             <div className="wrapUploadImage">
@@ -158,17 +147,11 @@ export class UploadImage extends Component {
                 <h1>Upload image</h1>
                     <input onChange={this.onChange} className="file" type="file" name="file" />
                     <button type="button" onClick={this.uploadImage}>Upload Image</button>
+                    <button className="noUplaod" onClick={this.noUpload}>X</button>
             </div>
         )
     }
 }
-
-
-// Profile Component displaying profilePic, first and last name, link to add bio
-
-
-
-
 
 // Update Bio Component
 
@@ -180,29 +163,31 @@ export class Bio extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.onChange = this.onChange.bind(this)
     }
+
     onChange(e) {
         this.setState({
             [e.target.name]:e.target.value
         }, () => console.log('new state', this.state))
 
     }
+
     handleSubmit(e){
         e.preventDefault();
         let data = {
             bio: this.state.bio
         }
+
         axios.post('/update-bio', data)
-        .then(result => {
-            if(result.data.success) {
-                this.props.setBio(result.data.newBio)
-                location.replace("/")
-            } else {
-                this.setState({error:true})
-            }
-        })
+            .then(result => {
+                if(result.data.success) {
+                    this.props.setBio(result.data.newBio)
+                    location.replace("/")
+                } else {
+                    this.setState({error:true})
+                }
+            })
     }
     render(){
-
         return(
             <div>
                 <Profile first={this.props.first} last={this.props.last} imgUrl={this.props.imgUrl}/>
@@ -216,13 +201,8 @@ export class Bio extends Component {
     }
 }
 
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // View OtherUsers Profiles
 
-
-// {this.state.status == 0 && 'Send FriendRequest'}
-
-// <button>{condition && text inside button}</button>
 
 export class FriendButton extends Component {
     constructor(props) {
@@ -233,21 +213,18 @@ export class FriendButton extends Component {
     }
 
     componentDidMount() {
-        console.log('getting params id from props in FriendButton', this.props);
         axios.get('/friend-status/' + this.props.id)
-        .then(results => {
-            console.log('status on client side', results.data);
-            this.props.setFriendStatus(results.data.status)
+            .then(results => {
+                console.log('status on client side', results.data);
+                this.props.setFriendStatus(results.data.status)
 
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     render() {
-
-
         return(
             <h1>Checking Friendship</h1>
         )

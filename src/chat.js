@@ -5,48 +5,43 @@ import {postMessage, getMessages} from './actions';
 import {getSocket} from './socket';
 
 const mapStateToProps = state => {
-    console.log('state', state.messages);
     return{
         messages: state.messages
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-  postMessage: aMessage => dispatch(postMessage(aMessage)),
-  getMessages: () => dispatch(getMessages())
+    postMessage: aMessage => dispatch(postMessage(aMessage)),
+    getMessages: () => dispatch(getMessages())
 });
 
 class Chat extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-  componentDidUpdate() {
-    this.elem.scrollTop = this.elem.scrollHeight - this.elem.clientHeight;
-    this.textArea.value =''
-  }
+    componentDidUpdate() {
+        this.elem.scrollTop = this.elem.scrollHeight - this.elem.clientHeight;
+        this.textArea.value =''
+    }
 
-  componentDidMount() {
-    this.props.getMessages();
-  }
-
-
-  render() {
-      console.log('props?', this.props);
-      var messageList =[];
-      if (this.props.messages) {
-          this.props.messages.map(message => {
-              messageList.push(
-                  <div className="chatText">
-                    <p>{message.first}: {message.message}</p>
-                  </div>
-              )
-          })
-      }
+    componentDidMount() {
+        this.props.getMessages();
+    }
 
 
-    // index of array
+    render() {
+        let messageList =[];
+        if (this.props.messages) {
+            this.props.messages.map(message => {
+                messageList.push(
+                    <div className="chatText">
+                        <p>{message.first}: {message.message}</p>
+                    </div>
+                )
+            })
+        }
 
         return (
             <div className="scroll chat">

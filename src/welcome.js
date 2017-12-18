@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 
-// in functional components we do not have 'this', as no state and no constructor
-
 
 export class Welcome extends Component {
     constructor(props) {
@@ -12,12 +10,13 @@ export class Welcome extends Component {
         this.showRegistration = this.showRegistration.bind(this)
 
     }
+
     showRegistration(string) {
         this.setState({
             active: string
         })
-
     }
+
     render() {
 
         const children = React.cloneElement(this.props.children, {
@@ -34,14 +33,11 @@ export class Welcome extends Component {
     }
 }
 
-
-
 // Registration
 
 export class Register extends React.Component {
     constructor(props) {
         super(props);
-        // setting a default state.
         this.state = {
           first: '',
           last: '',
@@ -49,22 +45,14 @@ export class Register extends React.Component {
           password: '',
           imgUrl: ''
         };
-        // if we use functions in a class, we have to BIND something.
-        // React always does it the ES6 way.
-        // in classes in Javascript, we have to bind the method of that function to that this keyword of that class.
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-
     }
+
     onSubmit(e) {
         e.preventDefault();
-        console.log(e.target);
-       // getting form data out of state
-        const { first, last, email, password, imgUrl } = this.state;
 
-        // instead of this.state.first, this.state.lname, this.state.password
-        // const { first, lname, email, password } = this.state;
-        // => so i only need to write first, lname, email, password
+        const { first, last, email, password, imgUrl } = this.state;
 
         axios.post('/', { first, last, email, password, imgUrl })
             .then(res => {
@@ -76,21 +64,17 @@ export class Register extends React.Component {
          });
     }
     onChange(e) {
-        // [e.target.name] => NOT an array!!! THIS is ES6 syntax for
-        // dynamically generating a key name. on the fly.
-        // name comes from that element name="firstName"
-        // another way how to write it ;)
         const state = {};
         state[e.target.name] = e.target.value;
         this.setState(state);
-
     }
+
     render() {
-        console.log('this.props. registration+++++', this.props);
-        const { first, last, email } = this.state;
+        const { first, last, email, password } = this.state;
+
         return (
             <div>
-                {this.state.error && <div>You made a mistake</div>}
+                {this.state.error && <div className="errorRegister">You made a mistake</div>}
                 <div className="register">
                     <input className="input" onChange={this.onChange} type="text" nameClass="inputRegister" name="first" placeholder="Enter First Name" />
                     <input className="input" onChange={this.onChange} type="text" nameClass="inputRegister" name="last" placeholder="Enter Last Name" />
@@ -110,7 +94,6 @@ export class Register extends React.Component {
 }
 
 
-
 // Login
 
 export class Login extends React.Component {
@@ -124,38 +107,35 @@ export class Login extends React.Component {
         this.onSubmit = this.onSubmit.bind(this)
         this.goBackToRegister = this.goBackToRegister.bind(this)
     }
+
     onChange(e) {
         const state = {};
         state[e.target.name] = e.target.value;
         this.setState(state);
-
-
     }
+
     onSubmit(e) {
-        console.log('in here');
         e.preventDefault();
         let { email, password } = this.state;
 
         axios.post('/authorize', { email, password })
             .then(res => {
+                console.log('what is res?', res);
                 if(res.data.success) {
                     location.replace('/')
                 } else {
                     this.setState({ error: true })
                 }
-
          });
-
     }
 
     goBackToRegister() {
         this.setState({register:true})
     }
+
     render() {
         return(
             <div className="register">
-                {this.state.error && <div>Wrong login data</div>}
-                <h1></h1>
                 <input className="input" onChange={this.onChange} type="text" nameClass="inputRegister" name="email" placeholder="Enter E-Mail" />
                 <input className="input" onChange={this.onChange} type="password" nameClass="inputRegister" name="password" placeholder="Enter Password" />
                 <button className="submitBtnWelcome" onClick={this.onSubmit} type="button" nameClass="registerSubmit">Login</button>
@@ -163,13 +143,11 @@ export class Login extends React.Component {
                     Go back for <button className="welcomeBtn" onClick={() => this.props.showRegistration('register')}>Register</button>
                     {this.props.children}
                 </div>
+                {this.state.error && <p className="errorLogin">You made a mistake</p>}
             </div>
         )
     }
 }
-
-
-
 
 //Index Route
 
@@ -178,13 +156,11 @@ export class Default extends Component {
         super(props)
         this.state = {}
     }
+
     render() {
-        console.log('in default?????????', this.props);
         return(
             <div className="welcomeWrapper">
                 <img className="welcomeBackground" src="/bitcoin-background.jpg" />
-                <h1>Bit$Net</h1>
-                <h2>The Social Network for Bitcoin Lovers</h2>
                 <div className="clickForRegister" onClick={() => this.props.showRegistration('register')} className="clickForRegister" />
             </div>
         )

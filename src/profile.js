@@ -14,20 +14,12 @@ export class Profile extends Component {
         this.state = {};
     }
 
-    componentDidMount(){
-    }
-
     clicked(str) {
         this.setState({component: str})
     }
 
     render() {
         let id = this.props.id;
-
-        // const children = React.cloneElement(this.props.children, {
-        //     first: this.props.first,
-        //     id
-        // });
 
         return(
             <div className="profileWrapper">
@@ -62,11 +54,6 @@ export class Profile extends Component {
         )
     }
 }
-
-// <Link to="/online">Who is online</Link>
-// <Link to="/chat">Chat</Link>
-
-
 
 const mapStateToProps = function(state) {
     return {

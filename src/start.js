@@ -14,12 +14,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import FriendList from './friendList';
 import * as io from 'socket.io-client';
 import Online from './online';
-// import Chat from './chat';
 import FetchNews from './fetchNews';
 
 
 
 export const store = createStore(reducer, composeWithDevTools(applyMiddleware(reduxPromise)));
+
 let router;
 
 const notLoggedInRouter = (
@@ -53,7 +53,6 @@ const loggedInRouter = (
         </Router>
     </Provider>
 );
-
 
 
 if(location.pathname == '/welcome/') {

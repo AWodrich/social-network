@@ -4,54 +4,46 @@ import { getNews } from './actions';
 
 
 export class FetchNews extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-    this.state = {
-    //   news: []
-    };
-  }
+    componentDidMount() {
+        this.props.dispatch(getNews())
+    }
 
-  componentDidMount() {
-      this.props.dispatch(getNews())
-  }
-
-
-
-  render() {
-      console.log('inside FetchNews props', this.props);
-      if (!this.props.news) {
-          return (
-              <p>No news...</p>
-          )
-      } else {
-          this.props.news.map(results => {
-              console.log('in map');
-          })
-      }
-
-
+    render() {
+        if (!this.props.news) {
+            return (
+                <p>No news...</p>
+            )
+        } else {
+            this.props.news.map(results => {
+                console.log('in map');
+            })
+        }
 
       return (
           <div className="scroll">
 
             <ul>
-            {this.props.news && this.props.news.map(results => {
-                return(
-                <div className="newsWrapper" key={results.id}>
+                {this.props.news && this.props.news.map(results => {
+                    return (
+                        <div className="newsWrapper" key={results.id}>
 
-                    <h2>{results.title}</h2>
-                    <div className="displayNews">
-                        <a href={results.url} target="_blank">
-                        <img className="newsImg" src={results.urlToImage} />
-                        </a>
-                        <p>published: {results.publishedAt && results.publishedAt.slice(0,10)}</p>
-                        <p>source: {results.source.name}</p>
-                    </div>
+                            <h2>{results.title}</h2>
+                            <div className="displayNews">
+                                <a href={results.url} target="_blank">
+                                <img className="newsImg" src={results.urlToImage} />
+                                </a>
+                                <p>published: {results.publishedAt && results.publishedAt.slice(0,10)}</p>
+                                <p>source: {results.source.name}</p>
+                            </div>
 
-                </div>
-            )
-            })}
+                        </div>
+                    )
+                })}
             </ul>
         </div>
     );
@@ -60,7 +52,6 @@ export class FetchNews extends Component {
 
 
 const mapStateToProps = (state) => {
-    console.log('++++++inside mapStateToProps state', state)
     return {
         news: state.news
     }

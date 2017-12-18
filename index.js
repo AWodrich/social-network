@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
-// avoiding injection
+// avoiding malicious injection
 const csrf = require('csurf');
 const csrfProtection = csrf();
 const uidSafe = require('uid-safe');
@@ -16,15 +16,10 @@ const path = require('path');
 const pw = require('./password');
 const database = require('./database.js');
 const s3 = require('./s3');
-
+// creating server
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 
-
-// const url = require('url');
-
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 // Storing images
@@ -46,63 +41,48 @@ const uploader = multer({
     }
 });
 
-
-
-// ========= compress text, that is sent to the browser ==============================
+// compress text sent to the browser
 const compression = require('compression');
 
-
-
-// ========== test if app in production, which would be heroku.
-// when code is bundle.js, then go to a different server, here it would be localhost:8081;
+// test if app in production
 if (process.env.NODE_ENV != 'production') {
     app.use('/bundle.js', require('http-proxy-middleware')({
-        target: 'http://localhost:8081/'
+        target: 'http://localhost:8082/'
     }));
 }
 
-
-
-// ========= make webpage secure ==============================
+// make webpage secure
 app.disable('x-powered-by');
 
 
-
-// ========= make sure your side cannot being put into a frame =====
+// make sure that webpage cannot be put into a frame for misusage
 app.use((req, res, next) => {
     res.setHeader('x-frame-options', 'deny');
     next();
 });
 
-
-
-// ====== serve static directory ==================================
+// serve static directory
 app.use(express.static("public"));
 app.use(express.static('uploads'));
 
-// every time we need to regenerate the entire applicaton.
 
-
-
-// ====== use cookie, cookie-session, bodyParser and compression ================
-// we need this because "cookie" is true in csrfProtection
+// cookie, cookie-session, bodyParser, compression
 app.use(cookieParser());
+
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
 app.use(cookieSession({
     secret: 'my secret is a secret that secretly secrets itself',
     maxAge: 1000 * 60 * 60 * 24 * 14
 }));
+
 app.use(bodyParser.json())
+
 app.use(compression());
 
-// putting csrf token into cookie through this middleware
-// app.use(csrf());
-// app.use(function(req, res, next){
-//     res.cookie('mytoken', req.csrfToken());
-//     next();
-// });
+
 // ============== routes =================
 
 // 1. Main Page
@@ -125,11 +105,7 @@ app.get('/welcome/', (req, res) => {
 })
 
 //   2. Registration page
-
-
 app.post('/', (req, res) => {
-        console.log('req.body', req.body);
-
           let first = req.body.first;
           let last = req.body.last;
           let password = req.body.password;
@@ -157,8 +133,8 @@ app.post('/', (req, res) => {
           }
     });
 
-    // 3. Login Page
 
+// 3. Login Page
 app.post('/authorize', (req, res) => {
     const { email, password } = req.body;
     if(!email || !password) {
@@ -194,7 +170,6 @@ app.post('/authorize', (req, res) => {
 
 
 // 4. Logout Page
-
 app.get('/logout', function(req, res) {
   req.session = null;
   res.redirect('/welcome/')
@@ -227,7 +202,6 @@ app.post('/upload', uploader.single('file'), (req, res) => {
         .then(()  => {
             database.uploadImages(req.file.filename, req.session.user.id)
             .then(result=> {
-                // res.redirect('/user')
                 res.json({
                     success: true,
                     imgUrl: req.file.filename
@@ -240,13 +214,11 @@ app.post('/upload', uploader.single('file'), (req, res) => {
         .catch(err => {
             console.log(err);
         })
-
     }
 })
 
 
 // 7. Updating Bio information
-
 app.post('/update-bio', (req, res) => {
     database.updatedBio(req.body.bio, req.session.user.id)
     .then(results => {
@@ -259,7 +231,6 @@ app.post('/update-bio', (req, res) => {
 
 
 // 8. Get data from specific user by his/her id
-
 app.get('/user.json/:id', (req, res) => {
     database.getSpecificUserData(req.params.id)
     .then(data => {
@@ -268,12 +239,10 @@ app.get('/user.json/:id', (req, res) => {
     .catch(err => {
         console.log(err);
     })
-
 })
 
 
 // Check Friendship status
-
 app.get('/friend-status/:id', (req, res) => {
     const recipientId = req.params.id;
     const loggedInUserId = req.session.user.id;
@@ -290,7 +259,7 @@ app.get('/friend-status/:id', (req, res) => {
     })
 })
 
-// status 1 = pending friendrequest, 2 = friendrequest canceled, 3 = friendrequest accepted, 4 = friendship terminated
+// ++++++ status 1 = pending friendrequest, 2 = friendrequest canceled, 3 = friendrequest accepted, 4 = friendship terminated
 
 // Update Friendship status
 
@@ -327,14 +296,12 @@ let users = [];
 
 io.sockets.on('connection', socket => {
     console.log('Connected: %s users connected', users.length);
-
     // DISCONNECT, tells me how many users are still online, when a user has desconnected
     socket.on('disconnect', data => {
         let movinUserID;
         for (let i = 0; i < users.length; i++) {
             if (users[i].socketId == socket.id) {
                 movinUserID = users[i].userId;
-                console.log('disconnected matched');
             }
         }
 
@@ -348,37 +315,32 @@ io.sockets.on('connection', socket => {
                 userIdCount++;
             }
         }
-        console.log('is there multiple disconnects?', userIdCount);
         if (userIdCount < 2) {
             io.sockets.emit('userLeft', {userLeft: movinUserID});
         } else {
             console.log('userStill here, had multiple connections');
         }
     });
-
 });
 
-
 app.get('/connected/:socketId', function(req, res, next) {
-
     if (!req.session.user) {
         return next();
     }
     users.push({userId: req.session.user.id, socketId: req.params.socketId});
     const ids = users.map(id => id.userId);
     database.getUsersByIds(ids)
-    .then(results => {
-        io.sockets.sockets[req.params.socketId].emit('usersOnline', results);
-    })
-    .catch(err => {
-        console.log(err);
-    })
+        .then(results => {
+            io.sockets.sockets[req.params.socketId].emit('usersOnline', results);
+        })
+        .catch(err => {
+            console.log(err);
+        })
 
     let movinUserID;
     for (let i = 0; i < users.length; i++) {
         if (users[i].socketId == req.params.socketId) {
             movinUserID = users[i].userId;
-            console.log('connected matched');
         }
     }
     let userIdCount = 0;
@@ -387,7 +349,6 @@ app.get('/connected/:socketId', function(req, res, next) {
             userIdCount++;
         }
     }
-    console.log('is there multiple connects?', userIdCount);
     if (userIdCount < 2) {
         database.getUserById(movinUserID).then(results => {
             io.sockets.emit('userJoined', results);
@@ -399,7 +360,6 @@ app.get('/connected/:socketId', function(req, res, next) {
 });
 
 // Chat
-
 const messageArray = [];
 
 app.post('/chat.json', (req, res) => {
@@ -419,31 +379,11 @@ app.post('/chat.json', (req, res) => {
 });
 
 app.get('/chat.json', (req, res) => {
-  console.log('get array++++++++++++++++++++++', messageArray);
   res.json(messageArray);
 });
 
 
-app.get('/news', (req, res) => {
-
-        // console.log('what is response?', resp, url);
-        // let data = '';
-        // res.on('data', chunk => {
-        //     data += chunk;
-        //     // console.log('data', data);
-        // })
-        // res.on('end', () => {
-        //     console.log(JSON.parse(data).explanation);
-        // })
-        // res.on('error', err => {
-        //     console.log("Error:" + err.message);
-        // })
-})
-
-
-
-// 1. Fallback route, the fail safe
-// This route has to go on the bottom of this file.
+// Fallback route, the fail safe
 
 app.get('*', function(req, res){
     if(!req.session.user && req.session.url != '/'){
@@ -458,7 +398,7 @@ app.get('*', function(req, res){
 
 
 
-//=================== setting up server ========================================//
+// setting up server
 server.listen(process.env.PORT || 8080, function() {
     console.log("I'm listening.")
 });
